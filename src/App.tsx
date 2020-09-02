@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import { UrprLogo } from './components/logo';
+import { DesktopNavigation } from './components/navigation/desktopNavigation';
+import { IndexFragment } from './views/IndexFragment';
+import { TeamFragment } from './views/TeamFragment';
+import { OpenDataFragment } from './views/OpenDataFragment';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+  private subDirectory = window.location.pathname.split("/")[1]
+  render() {
+    switch (this.subDirectory) {
+      case "research":
+        return <IndexFragment />
+      case "opendata":
+        return <OpenDataFragment />
+      case "team":
+        return <TeamFragment />
+      default:
+        return <IndexFragment />
+    }
+  }
 }
 
 export default App;

@@ -1,0 +1,42 @@
+[
+    {
+        "fileName": "Covid-19-Policy-Tracker",
+        "displayName": "Covid-19 Policy Tracker",
+        "thumbnail": "1.jpg"
+    },
+    {
+        "fileName": "Chinese-rural-life-through-mobile-phone-data",
+        "displayName": "Chinese rural life through mobile phone data",
+        "thumbnail": "2.jpg"
+    },
+    {
+        "fileName": "Deep-learning-the-quality-of-urban-environment",
+        "displayName": "Deep learning the quality of urban environment",
+        "thumbnail": "3.jpg"
+    },
+    {
+        "fileName": "TAI-A-new-method-for-analyzing-spatiotemporal-behavior",
+        "displayName": "TAI: A new method for analyzing spatiotemporal behavior",
+        "thumbnail": "4.jpg"
+    },
+    {
+        "fileName": "Visualizing-fine-grained-socio-spatial-landscape-in-Beijing",
+        "displayName": "Visualizing fine-grained socio-spatial landscape in Beijing",
+        "thumbnail": "5.jpg"
+    },
+    {
+        "fileName": "Visualizing-ten-years-of-PM2.5-pollution-in-Beijing",
+        "displayName": "Visualizing ten years of PM2.5 pollution in Beijing",
+        "thumbnail": "6.jpg"
+    },
+    {
+        "fileName": "How-urban-environment-impact-travel-behavior",
+        "displayName": "How urban environment impact travel behavior",
+        "thumbnail": "7.jpeg"
+    },
+    {
+        "fileName": "Streetchar-An-R-package-for-measuring-key-qualities-of-streets",
+        "displayName": "Streetchar: An R package for measuring key qualities of streets",
+        "thumbnail": "8.png"
+    }
+]

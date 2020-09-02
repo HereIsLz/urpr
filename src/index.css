@@ -1,13 +1,56 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+img {
+  object-fit: cover;
+  -o-object-fit: cover;
+}
+
+.hover-card {
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.hover-card:hover {
+  opacity: .9;
+  transition: opacity .5s;
+}
+
+.hover-text {
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.hover-text:hover {
+  opacity: 1;
+  transition: opacity .5s;
+}
+
+a:visited {
+  color: #bc2f34;
+  text-decoration: none;
+  border-bottom: 0 solid #9f282c;
+  transition: all .2s;
+}
+
+a:hover, a:hover:visited, a:hover {
+  color: #0ca0f0;
+  text-decoration: none;
+  border-bottom: 2px solid #0ca0f0;
+  transition: all .14s;
+}
+
+a {
+  color: #005da6;
+  text-decoration: none;
+  border-bottom: 0 solid #005da6;
+  transition: all .2s;
 }

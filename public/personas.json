@@ -1,0 +1,33 @@
+[
+    {
+        "name": "Harry Potter",
+        "role": "Assistant Professor & Researcher",
+        "linkText": "https://baidu.com",
+        "linkUrl": "https://baidu.com",
+        "thumbnail": "hp.jfif"
+    },
+    {
+        "name": "Tom Riddle",
+        "role": "Assistant Professor & Researcher",
+        "linkText": "100000@pku.edu.cn",
+        "linkUrl": "mailto:100000@pku.edu.cn"
+    },
+    {
+        "name": "Albus Dumbledore",
+        "role": "Assistant Professor, Peking University",
+        "linkText": "https://baidu.com",
+        "linkUrl": "https://baidu.com"
+    },
+    {
+        "name": "李明",
+        "role": "Assistant Professor & Researcher, Peking University",
+        "linkText": "100000@pku.edu.cn",
+        "linkUrl": "mailto:100000@pku.edu.cn"
+    },
+    {
+        "name": "Lun Liu",
+        "role": "Assistant Professor & Researcher, Peking University",
+        "linkText": "https://baidu.com",
+        "linkUrl": "https://baidu.com"
+    }
+]
