@@ -6,7 +6,7 @@ The data is visualized in a calendar view with colors representing the daily ave
 
  
 
-![img](C:\Users\maste\webdev\urpr\public\pages\Untitled.assets\clip_image002-1599025171513.jpg)
+![img](/pages/Untitled.assets/clip_image002-1599025171513.jpg)
 
 Level of pollution in Beijing 2007-2018
 

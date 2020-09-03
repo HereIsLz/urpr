@@ -73,7 +73,7 @@ export const TeamFragment: React.FC = () => {
                 role: 'Assistant Professor & Researcher, Peking University',
                 linkText: 'Official Page',
                 linkUrl: 'https://www.sg.pku.edu.cn/szdw/zzjs/csyqyglx1/1318197.htm',
-                link2Text: 'Mail: liu.lun@pku.edu.cn',
+                link2Text: 'liu.lun@pku.edu.cn',
                 link2Url: 'mailto:liu.lun@pku.edu.cn',
             })}
             <StretchablePersonaGrid personaManifestUrl="personas.json" textTitle="Graduate Students"/>

@@ -69,8 +69,8 @@ const PageThumbnailTitleStyle: React.CSSProperties = {
     opacity: 1
 }
 export const PageThumbnailUnitGrid: React.FC<IPageThumbnailUnitGridProps> = (props) => {
-    return <div style={PageThumbnailUnitGridStyle}>
-        {props.manifest.thumbnail ? <Image shouldFadeIn src={resolveStaticImages(props.manifest.thumbnail)} styles={{ root: { width: '100%', height: "100%",position:"absolute" }, image: { width: '100%', height: "100%" } }} /> : null}
+    return <div style={PageThumbnailUnitGridStyle} onClick={() => window.location.href = `research/${props.manifest.fileName}`}>
+        {props.manifest.thumbnail ? <Image shouldFadeIn src={resolveStaticImages(props.manifest.thumbnail)} styles={{ root: { width: '100%', height: "100%", position: "absolute" }, image: { width: '100%', height: "100%" } }} /> : null}
         <div style={PageThumbnailTitleBgStyle} className="hover-card">
             <div style={PageThumbnailTitleStyle}>
                 {props.manifest.displayName}

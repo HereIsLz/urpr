@@ -4,7 +4,7 @@ How is daily life like in rural China nowadays? Where do the rural residents wor
 
 We used the prefecture of Chengdu in west China as the case of study. From a week’s mobile phone trace data provided by China Unicom, we identified 0.97 million rural residents (17% of the rural population by official statistics) and studied their daily activity patterns, including the home-work locations pairs, the number and spatial range of movements per day, the diversity of destinations, etc. For example, we found that 7% of all rural labor forces in Chengdu commute to urban areas to conduct non-agricultural work, which is an unconventional lifestyle.
 
-![1599024954461](C:\Users\maste\webdev\urpr\public\pages\Chinese-rural-life-through-mobile-phone-data.assets\1599024954461.png)
+![1599024954461](/pages/Chinese-rural-life-through-mobile-phone-data.assets/1599024954461.png)
 
 Home-work location pairs for rural residents in Chengdu
 
@@ -12,7 +12,7 @@ Home-work location pairs for rural residents in Chengdu
 
 We also further examined the impact of a major rural policy in China, namely rural housing land consolidation, which is a policy to relocate rural residents, reduce the area of built-up land and reclaim agricultural land. This policy has been widely implemented across China since 2005, yet the impact on the daily life of rural people is seldom quantitatively evaluated. We filled this gap by examining the daily activity pattern of rural residents in consolidated and unconsolidated villages and found that housing land consolidation results in longer distance to work, 375 meters in average, and shorter distance for non-work activities, 529 meters in average.
 
-![1599024969520](C:\Users\maste\webdev\urpr\public\pages\Chinese-rural-life-through-mobile-phone-data.assets\1599024969520.png)
+![1599024969520](/pages/Chinese-rural-life-through-mobile-phone-data.assets/1599024969520.png)
 
 Spatial range of rural residents’ activities 
 

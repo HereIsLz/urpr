@@ -20,16 +20,8 @@ export class DesktopPivot extends React.Component<IPivotItemProps, IPivotItemSta
             selectedPivotKey: props.defaultSelectedPivotKey
         }
     }
-
-
     private _pivotItems(manifest: IManifestItem[]) {
-        var res: JSX.Element[] = [
-            <PivotItem
-                headerText={"home"}
-                key={""}
-                itemKey={""}
-            />
-        ];
+        var res: JSX.Element[] = [];
         manifest.forEach(
             st => res.push(<PivotItem headerText={st.name} key={st.route} itemKey={st.route} />)
         )
@@ -45,12 +37,12 @@ export class DesktopPivot extends React.Component<IPivotItemProps, IPivotItemSta
                             window.open(item?.props.itemKey, '_blank')
                             return;
                         }
-                        this.setState({selectedPivotKey: item?.props.itemKey})
+                        this.setState({ selectedPivotKey: item?.props.itemKey })
                         window.location.href = item?.props.itemKey ? item?.props.itemKey : ""
                     }
                 }
                 styles={{
-                    root: { height: NAVIGATION_LAYOUT.height, selectors: { ">button:first-child": { display: "none" } } },
+                    root: { height: NAVIGATION_LAYOUT.height },
                     link: { height: NAVIGATION_LAYOUT.height },
                     linkIsSelected: { height: NAVIGATION_LAYOUT.height },
                     linkContent: { minWidth: NAVIGATION_LAYOUT.linkMinWidth, fontSize: NAVIGATION_LAYOUT.linkTextSize, textRendering: "legibility" }

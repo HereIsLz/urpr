@@ -14,23 +14,23 @@ import { UrprFull } from "../../configs/strings";
 const pivotConfigs = [
     {
         name: "Research",
-        route: "research"
+        route: "/research"
     },
     {
         name: "Team",
-        route: "team"
+        route: "/team"
     },
     {
         name: "Updates",
-        route: "update"
+        route: "/update"
     },
     {
         name: "Open Data",
-        route: "opendata"
+        route: "/opendata"
     },
     {
         name: "Covid-19",
-        route: "covid19"
+        route: "/research/Covid-19-Policy-Tracker"
     }
 ]
 export interface IDesktopNavigationProps {
@@ -53,9 +53,9 @@ export const DesktopNavigation: React.FunctionComponent<IDesktopNavigationProps>
                 <ResponsiveDiv>
                     <Stack horizontal horizontalAlign="space-between" >
                         <div style={{ height: NAVIGATION_LAYOUT.height }}><UrprLogo /></div>
-                        {width > breakpointMedium ? <DesktopPivot manifest={pivotConfigs} defaultSelectedPivotKey={window.location.pathname.split('/')[1]} />
+                        {width > breakpointMedium ? <DesktopPivot manifest={pivotConfigs} defaultSelectedPivotKey={"/" + window.location.pathname.split('/')[1]} />
                             : <IconButton iconProps={{ iconName: "GlobalNavButton" }} title={UrprFull} ariaLabel={UrprFull}
-                                styles={{ root: { verticalAlign: 'center', height: NAVIGATION_LAYOUT.height, width: NAVIGATION_LAYOUT.height, marginRight:-24 }, icon: { fontSize: 24} }} />}
+                                styles={{ root: { verticalAlign: 'center', height: NAVIGATION_LAYOUT.height, width: NAVIGATION_LAYOUT.height, marginRight: -24 }, icon: { fontSize: 24 } }} />}
                     </Stack>
 
                     {/* <NavigateShimmer /> */}
