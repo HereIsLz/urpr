@@ -7,7 +7,8 @@ var fetchItemCount = 0;
 
 // TODO: 遇到 Expire 时新数据替换而不是增加
 
-const EXPIRE_TIME_MILLISECOND = 3600000
+// 10min
+const EXPIRE_TIME_MILLISECOND = 36000
 
 export interface fetchedItem {
     key: string,

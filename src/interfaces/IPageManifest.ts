@@ -8,5 +8,7 @@ export interface IPageManifest {
     fileName: string,
     displayName: string,
     thumbnail?: string,
-    link?: IClickablePageLink
+    link?: IClickablePageLink,
+    publishedTimestamp?: number,
+    author?: string
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { IPageManifest } from '../../configs/defs';
+import { IPageManifest } from '../../interfaces/IPageManifest';
 import { fetchJsonWithProgress } from '../../utils/fetchs/fetchWithProgress';
 import { GRID_LAYOUT } from './_layout';
 import { useViewport } from '../../utils/hooks/useViewport';
@@ -9,29 +9,20 @@ import { theme } from '../../configs/theme';
 import { FontIcon, mergeStyles, Text, Image } from "@fluentui/react";
 import { PersonaInitialsColor } from 'office-ui-fabric-react/lib/Persona';
 import { resolveStaticImages } from '../../configs/resources';
+import { IPersonaCustomedProps, IMergedPersonaCustomedProps } from '../../interfaces/IPersonas';
 
 export interface IStretchablePersonaGridProps {
-    personaManifestUrl: string,
-    textTitle: string
+    personaManifestUrl: string
 }
-export interface IPersonaCustomedProps {
-    thumbnail?: string,
-    imageInitials: string,
-    name: string,
-    role: string,
-    linkText: string,
-    linkUrl: string,
-    link2Text?: string,
-    link2Url?: string
-}
+
 export interface IStretchablePersonaGridStates {
-    personas: IPersonaCustomedProps[]
+    personas: IMergedPersonaCustomedProps[]
 }
 const gridWrapperStyle = (width: number): React.CSSProperties => {
     const __style: React.CSSProperties = {
         display: 'grid',
         gridTemplateColumns: `repeat(${GRID_LAYOUT.getGridNum(width)}, 1fr)`,
-        gridGap: 12,
+        gridGap: 48,
     }
     return __style
 }
@@ -50,6 +41,9 @@ const coinClass = mergeStyles({
     display: 'block',
 });
 
+
+
+
 export class StretchablePersonaGrid extends React.Component<IStretchablePersonaGridProps, IStretchablePersonaGridStates>{
     constructor(props: IStretchablePersonaGridProps) {
         super(props)
@@ -63,17 +57,26 @@ export class StretchablePersonaGrid extends React.Component<IStretchablePersonaG
 
     private getGrids(manifest: IPersonaCustomedProps[]): JSX.Element[] {
         return manifest.map(
-            renderPersonaFromPersonaManifest
+            renderPersonaFromPersonaManifest_portrait
+        )
+    }
+
+    private getGroupedGrids(mergedManifests: IMergedPersonaCustomedProps[]): JSX.Element[] {
+        return mergedManifests.map(
+            e => <div>
+                <div style={{ margin: '32px 0 16px 0' }}>
+                    <Text variant="xLarge" style={{ lineHeight: 2, color: theme.palette.neutralPrimary }}>
+                        {e.role} </Text>
+                </div>
+                <GridWrapper>{this.getGrids(e.personas)}</GridWrapper>
+            </div>
         )
     }
 
     render() {
         return <div>
-            <div style={{ margin: '32px 0 16px 0' }}>
-                <Text variant="xLarge" style={{ lineHeight: 2, color: theme.palette.neutralPrimary }}>
-                    {this.props.textTitle} </Text>
-            </div>
-            <GridWrapper>{this.getGrids(this.state.personas)}</GridWrapper></div>
+            {this.getGroupedGrids(this.state.personas)}
+        </div>
     }
 }
 
@@ -99,8 +102,30 @@ export const renderPersonaFromPersonaManifest = (e: IPersonaCustomedProps) => {
             <Text variant="large" block >{e.name}</Text>
             <Text variant="medium" block style={{ marginTop: 8 }}>{e.role}</Text>
             {e.linkText && <Text variant="medium" block style={{ marginTop: 8 }}>
-                <a href={e.linkUrl} target={e.linkUrl.startsWith("http") ? "_blank" : undefined}>
-                    <FontIcon iconName={e.linkUrl.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.linkText}</a>
+                <a href={e.linkUrl} target={e.linkUrl!.startsWith("http") ? "_blank" : undefined}>
+                    <FontIcon iconName={e.linkUrl!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.linkText}</a>
+            </Text>}
+            {e.link2Text && <Text variant="medium" block style={{ marginTop: 8 }}>
+                <a href={e.link2Url} target={e.link2Url!.startsWith("http") ? "_blank" : undefined}>
+                    <FontIcon iconName={e.link2Url!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.link2Text}</a>
+            </Text>}
+        </div>
+    </div>
+}
+
+export const renderPersonaFromPersonaManifest_portrait = (e: IPersonaCustomedProps) => {
+    const nameAbbr = e.name.split(" ").map(i => i[0]).join("").substr(0, 2)
+    return <div>
+        <div style={{ width: "100%", height: 320, display: "table", textAlign: "center", background: personaInitialsColorToHexCode((textHash(nameAbbr) + 2) % 25) }} >
+            {e.thumbnail ? <Image src={resolveStaticImages(e.thumbnail)} styles={{ root: { width: "100%", height: 320 }, image: { width: "100%", height: "100%" } }} />
+                : <Text variant="superLarge" style={{ color: '#fff', display: 'table-cell', verticalAlign: 'middle' }}>{nameAbbr}</Text>}
+        </div> 
+        <div>
+            <Text variant="large" block style={{ marginTop: 8 }}>{e.name}</Text>
+            <Text variant="medium" block style={{ marginTop: 8 }}>{e.role}</Text>
+            {e.linkText && <Text variant="medium" block style={{ marginTop: 8 }}>
+                <a href={e.linkUrl} target={e.linkUrl!.startsWith("http") ? "_blank" : undefined}>
+                    <FontIcon iconName={e.linkUrl!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.linkText}</a>
             </Text>}
             {e.link2Text && <Text variant="medium" block style={{ marginTop: 8 }}>
                 <a href={e.link2Url} target={e.link2Url!.startsWith("http") ? "_blank" : undefined}>

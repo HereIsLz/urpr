@@ -1,5 +1,5 @@
 export const NAVIGATION_LAYOUT = {
-    height: 72,
-    linkMinWidth: 72,
+    height: 60,
+    linkMinWidth: 60,
     linkTextSize: 16,
 }

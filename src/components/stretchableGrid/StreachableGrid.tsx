@@ -1,5 +1,5 @@
 import React from 'react'
-import { IPageManifest } from '../../configs/defs';
+import { IPageManifest } from '../../interfaces/IPageManifest';
 import { fetchJsonWithProgress } from '../../utils/fetchs/fetchWithProgress';
 import { GRID_LAYOUT } from './_layout';
 import { useViewport } from '../../utils/hooks/useViewport';

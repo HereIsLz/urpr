@@ -13,13 +13,14 @@ import { registerIcons } from 'office-ui-fabric-react/lib/Styling';
 import { useBoolean } from '@uifabric/react-hooks'
 import { theme } from './configs/theme';
 import { Footnote } from './components/footnote/Footnote';
+import { FOOTNOTE_LAYOUT } from './components/footnote/_layout';
 
 //const history = createHistory();
 loadTheme(theme)
 initializeIcons()
 
 ReactDOM.render(
-  <div>
+  <div style={{ position: 'relative', minHeight: '100vh' }}>
     <App />
     <Footnote />
   </div>,

@@ -6,7 +6,7 @@ import { UrprAbbr, UrprDesc } from '../configs/strings';
 import { theme } from '../configs/theme';
 
 
-export const UrprLogo: React.FC = () => {
+export const UrprConsoleLogo: React.FC = () => {
     return <Text variant="xxLarge" aria-label={UrprDesc}
         onClick={() => { window.location.pathname = "/" }}
         style={{
@@ -23,5 +23,18 @@ export const UrprLogo: React.FC = () => {
             cursor: 'pointer'
         }}>
         {UrprAbbr}
+        <Text variant="xxLarge" style={{
+            alignItems: 'center',
+            display: 'flex',
+            height: '100%',
+            justifyContent: 'center',
+            color: theme.palette.neutralDark,
+            fontWeight: 400,
+            KhtmlUserSelect: 'none',
+            MozUserSelect: 'none',
+            WebkitUserSelect: 'none',
+            userSelect: 'none',
+            cursor: 'pointer'
+        }}>&nbsp;Console</Text>
     </Text>
 }

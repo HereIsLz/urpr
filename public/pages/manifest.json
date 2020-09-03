@@ -2,12 +2,15 @@
     {
         "fileName": "Covid-19-Policy-Tracker",
         "displayName": "Covid-19 Policy Tracker",
-        "thumbnail": "1.jpg"
+        "thumbnail": "1.jpg",
+        "author": "PKU_URPR",
+        "publishedTimestamp": 1599146275866
     },
     {
         "fileName": "Chinese-rural-life-through-mobile-phone-data",
         "displayName": "Chinese rural life through mobile phone data",
-        "thumbnail": "2.jpg"
+        "thumbnail": "2.jpg",
+        "publishedTimestamp": 1599146275866
     },
     {
         "fileName": "Deep-learning-the-quality-of-urban-environment",

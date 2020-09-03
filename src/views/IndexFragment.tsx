@@ -10,6 +10,7 @@ import { breakpointMedium, breakpointLarge } from '../configs/dimens';
 import { StretchableGrid } from '../components/stretchableGrid/StreachableGrid';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
 import { Footnote } from '../components/footnote/Footnote';
+import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
 
 const backgroundImageStyles: React.CSSProperties = {
     width: "100%",
@@ -24,7 +25,7 @@ export const IndexFragment: React.FC = () => {
     return <div>
 
         <div style={backgroundImageStyles}>
-            <DesktopNavigation alwaysColored />
+            <DesktopNavigation alwaysColored/>
             <div style={{ height: 0, width: "100%" }}><img src={resolveStaticImages("bg-origin.jpg")} style={backgroundImageStyles} /></div>
             <div style={{ marginTop: "calc(140px)" }}>
                 <ResponsiveDiv>
@@ -54,5 +55,6 @@ export const IndexFragment: React.FC = () => {
         </ResponsiveDiv>
 
         <StretchableGrid manifestUrl="pages/manifest.json" />
+        <RoomForFootnot/>
     </div>
 }

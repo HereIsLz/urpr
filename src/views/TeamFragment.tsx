@@ -10,7 +10,8 @@ import { breakpointMedium, breakpointLarge } from '../configs/dimens';
 import { StretchableGrid } from '../components/stretchableGrid/StreachableGrid';
 import { NAVIGATION_LAYOUT } from '../components/navigation/_layout';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
-import { StretchablePersonaGrid, renderPersonaFromPersonaManifest } from '../components/stretchableGrid/StrechablePersonaGrid';
+import { StretchablePersonaGrid, renderPersonaFromPersonaManifest, renderPersonaFromPersonaManifest_portrait } from '../components/stretchableGrid/StrechablePersonaGrid';
+import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
     width: "100%",
@@ -57,29 +58,11 @@ export const TeamFragment: React.FC = () => {
         </div>
 
 
-        <ResponsiveDiv disableOverflowX>
+        <ResponsiveDiv slimmed>
             <div style={{ margin: '72px 0 16px 0' }}>
                 <Text variant="superLarge">Our Team</Text>
             </div>
-            <div style={{ margin: '0 0 8px 0' }}>
-                <Text variant="xLarge" style={{ lineHeight: 2, color: theme.palette.neutralPrimary }}>
-                    Principal Investigator
-                </Text>
-            </div>
-            {renderPersonaFromPersonaManifest({
-                thumbnail: "persona1.jpg",
-                imageInitials: 'LL',
-                name: 'Lun Liu',
-                role: 'Assistant Professor & Researcher, Peking University',
-                linkText: 'Official Page',
-                linkUrl: 'https://www.sg.pku.edu.cn/szdw/zzjs/csyqyglx1/1318197.htm',
-                link2Text: 'liu.lun@pku.edu.cn',
-                link2Url: 'mailto:liu.lun@pku.edu.cn',
-            })}
-            <StretchablePersonaGrid personaManifestUrl="personas.json" textTitle="Graduate Students"/>
-        </ResponsiveDiv>
-
-        <ResponsiveDiv disableOverflowX>
+            <StretchablePersonaGrid personaManifestUrl="/personas.json" />
             <div style={{ margin: '72px 0 16px 0' }}>
                 <Text variant="superLarge" >Get Involved</Text>
             </div>
@@ -89,5 +72,6 @@ export const TeamFragment: React.FC = () => {
                 </Text>
             </div>
         </ResponsiveDiv>
+        <RoomForFootnot />
     </div>
 }

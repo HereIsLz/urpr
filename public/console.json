@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Edit Research Pages",
+        "route": "/console-edit"
+    },
+    {
+        "name": "Edit Team Members",
+        "route": "/console-edit"
+    },
+    {
+        "name": "Edit Open Data",
+        "route": "/console-edit"
+    }
+]
