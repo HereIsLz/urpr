@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { DesktopNavigation } from '../components/navigation/desktopNavigation'
 import { resolveStaticImages } from '../configs/resources'
 import { ResponsiveDiv } from '../components/responsive/ResponisveDiv'
@@ -9,6 +9,7 @@ import { useViewport } from '../utils/hooks/useViewport';
 import { breakpointMedium, breakpointLarge } from '../configs/dimens';
 import { StretchableGrid } from '../components/stretchableGrid/StreachableGrid';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
+import { Footnote } from '../components/footnote/Footnote';
 
 const backgroundImageStyles: React.CSSProperties = {
     width: "100%",
@@ -23,7 +24,7 @@ export const IndexFragment: React.FC = () => {
     return <div>
 
         <div style={backgroundImageStyles}>
-            <DesktopNavigation alwaysColored/>
+            <DesktopNavigation alwaysColored />
             <div style={{ height: 0, width: "100%" }}><img src={resolveStaticImages("bg-origin.jpg")} style={backgroundImageStyles} /></div>
             <div style={{ marginTop: "calc(140px)" }}>
                 <ResponsiveDiv>

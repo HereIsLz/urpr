@@ -34,23 +34,34 @@ img {
   transition: opacity .5s;
 }
 
-a:visited {
+a:not(.ms-Nav-link):visited {
   color: #bc2f34;
   text-decoration: none;
   border-bottom: 0 solid #9f282c;
   transition: all .2s;
 }
 
-a:hover, a:hover:visited, a:hover {
+a:not(.ms-Nav-link):hover, a:not(.ms-Nav-link):hover:visited, a:not(.ms-Nav-link):hover {
   color: #0ca0f0;
   text-decoration: none;
   border-bottom: 2px solid #0ca0f0;
   transition: all .14s;
 }
 
-a {
+a:not(.ms-Nav-link) {
   color: #005da6;
   text-decoration: none;
   border-bottom: 0 solid #005da6;
   transition: all .2s;
+}
+
+.urpr-markdown img {
+  width: 100%;
+  height: auto;
+  max-width: 640px;
+  margin: 0 auto
+}
+
+.ms-Nav-link {
+  padding-left: 20px;
 }

@@ -7,6 +7,7 @@ import { RESPONSIVE_LAYOUT } from "./_layout";
 export interface IResponsiveDivProps {
     children?: JSX.Element | JSX.Element[],
     centered?: boolean
+    disableOverflowX?: boolean
 }
 
 
@@ -14,6 +15,7 @@ export const ResponsiveDiv: React.FunctionComponent<IResponsiveDivProps> = (prop
     const { width } = useViewport();
     return width > breakpointLarge ?
         <div style={{
+            overflowX: props.disableOverflowX ? "hidden" : "inherit",
             textAlign: props.centered ? "center" : "inherit",
             width: width > breakpointLarge + RESPONSIVE_LAYOUT.collapsedMargin * 2 ?
                 RESPONSIVE_LAYOUT.pageWidth : width - RESPONSIVE_LAYOUT.collapsedMargin * 2,
@@ -23,7 +25,7 @@ export const ResponsiveDiv: React.FunctionComponent<IResponsiveDivProps> = (prop
         }} className="static-card-expanded">
             {props.children}
         </div> :
-        <div style={{ textAlign: props.centered ? "center" : "inherit", margin: `0 ${RESPONSIVE_LAYOUT.collapsedMargin}px` }}>
+        <div style={{ overflowX: props.disableOverflowX ? "hidden" : "inherit", textAlign: props.centered ? "center" : "inherit", margin: `0 ${RESPONSIVE_LAYOUT.collapsedMargin}px` }}>
             {props.children}
         </div>
 }

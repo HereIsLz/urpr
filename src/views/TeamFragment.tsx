@@ -57,7 +57,7 @@ export const TeamFragment: React.FC = () => {
         </div>
 
 
-        <ResponsiveDiv>
+        <ResponsiveDiv disableOverflowX>
             <div style={{ margin: '72px 0 16px 0' }}>
                 <Text variant="superLarge">Our Team</Text>
             </div>
@@ -79,7 +79,7 @@ export const TeamFragment: React.FC = () => {
             <StretchablePersonaGrid personaManifestUrl="personas.json" textTitle="Graduate Students"/>
         </ResponsiveDiv>
 
-        <ResponsiveDiv>
+        <ResponsiveDiv disableOverflowX>
             <div style={{ margin: '72px 0 16px 0' }}>
                 <Text variant="superLarge" >Get Involved</Text>
             </div>

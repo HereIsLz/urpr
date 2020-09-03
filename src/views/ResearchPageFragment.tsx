@@ -9,6 +9,7 @@ import { FontIcon } from 'office-ui-fabric-react/lib/Icon';
 import { IPageManifest } from '../configs/defs';
 import { fetchJsonWithProgress, fetchTextWithProgress } from '../utils/fetchs/fetchWithProgress';
 import { Markdown } from '../components/markdown/Markdown';
+import { UrprAbbr } from '../configs/strings';
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
     width: "100%",
@@ -38,14 +39,17 @@ export class ResearchPageFragment extends React.Component<IResearchPageFragmentP
             pageManifest: { fileName: this.pagepath, displayName: "" }
         }
     }
+
     private fetchPageManifest() {
         fetchJsonWithProgress("/pages/manifest.json")
             .then(
                 (mani: IPageManifest[]) => {
                     //console.log(mani)
                     //console.log(mani.filter(t => t.fileName == this.pagepath)[0])
+                    let _mani = mani.filter(t => t.fileName == this.pagepath)[0]
+                    document.title = `${UrprAbbr} - ${_mani.displayName}`
                     this.setState({
-                        pageManifest: mani.filter(t => t.fileName == this.pagepath)[0]
+                        pageManifest: _mani
                     })
                 }
             )

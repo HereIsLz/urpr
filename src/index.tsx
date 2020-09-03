@@ -12,13 +12,17 @@ import { loadTheme } from '@fluentui/react';
 import { registerIcons } from 'office-ui-fabric-react/lib/Styling';
 import { useBoolean } from '@uifabric/react-hooks'
 import { theme } from './configs/theme';
+import { Footnote } from './components/footnote/Footnote';
 
 //const history = createHistory();
 loadTheme(theme)
 initializeIcons()
 
 ReactDOM.render(
-  <App />,
+  <div>
+    <App />
+    <Footnote />
+  </div>,
   document.getElementById('root')
 );
 
