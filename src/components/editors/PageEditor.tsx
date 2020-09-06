@@ -61,7 +61,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
     }
 
     private _popupPageManifestItemEditor() {
-        this.setState({ isEditingNewPage: true })
+        this.setState({ isEditingNewPage: true, markdownPreviewString: "" })
     }
 
     private _deletePageManifestItem() {
@@ -91,16 +91,23 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
 
             uploadPageThumbnail(uploadQueue[0],
                 () => {
-                    uploadQueue = []
-                    this.setState({
-                        canSave: true,
-                        isEditingNewPage: false,
-                        editingNewPage: Object.assign<{}, IPageManifest>({}, emptyPageManifestItem),
-                        isNewPageRouteNailed: false,
-                        markdownPreviewString: "",
-                        pageManifest: newPageManifests
-                    })
-                    alert("succ")
+                    uploadPageMarkdown(
+                        this.state.markdownPreviewString,
+                        this.state.editingNewPage.fileName,
+                        () => {
+                            uploadQueue = []
+                            this.setState({
+                                canSave: true,
+                                isEditingNewPage: false,
+                                editingNewPage: Object.assign<{}, IPageManifest>({}, emptyPageManifestItem),
+                                isNewPageRouteNailed: false,
+                                pageManifest: newPageManifests
+                            })
+                            alert("succ")
+                        },
+                        () => { alert("fail") }
+                    )
+
                 },
                 () => {
 
@@ -109,8 +116,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                         canSave: true,
                         isEditingNewPage: false,
                         editingNewPage: Object.assign<{}, IPageManifest>({}, emptyPageManifestItem),
-                        isNewPageRouteNailed: false,
-                        markdownPreviewString: ""
+                        isNewPageRouteNailed: false
                     })
                     alert("fail")
                 }
@@ -247,14 +253,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
             let selectedImage = ev.currentTarget.files[0]
             uploadPageResources(selectedImage,
                 this.state.editingNewPage.fileName,
-                () => {
-                    uploadPageMarkdown(
-                        this.state.markdownPreviewString,
-                        this.state.editingNewPage.fileName,
-                        () => { alert("succ") },
-                        () => { alert("fail") }
-                    )
-                },
+                () => { alert("succ") },
                 () => { alert("fail") }
             )
         }
@@ -289,8 +288,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
         this.setState({
             editingNewPage: Object.assign<{}, IPageManifest>({}, emptyPageManifestItem),
             isNewPageRouteNailed: false,
-            isEditingNewPage: false,
-            markdownPreviewString: ""
+            isEditingNewPage: false
         })
     }
 

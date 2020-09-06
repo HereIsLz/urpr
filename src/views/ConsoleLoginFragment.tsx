@@ -16,6 +16,7 @@ import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
 import { ConsoleNavigation } from '../components/navigation/ConsoleNavigation';
 import { ConsoleFragment } from './ConsoleFragment';
 import { validateToken } from '../utils/apis/apis';
+import Cookies from 'js-cookie'
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
     width: "100%",
@@ -49,6 +50,8 @@ export const ConsoleLoginFragment: React.FC = () => {
     </div>
 }
 
+
+
 export const ConsoleWrappedFragment: React.FC = () => {
     const [isLogged, setIsLogged] = React.useState<boolean>(false)
     const [typedPassword, setTypedPassword] = React.useState<string>("")
@@ -65,7 +68,7 @@ export const ConsoleWrappedFragment: React.FC = () => {
                         <div style={{ maxWidth: 420 }}>
                             <Text variant="superLarge" style={{ lineHeight: "120px" }}>Log In</Text>
 
-                            <TextField label={"Username"} required 
+                            <TextField label={"Username"} required
                                 iconProps={{ iconName: "AccountBrowser" }}
                                 onChange={
                                     (e, v) => {
@@ -88,8 +91,13 @@ export const ConsoleWrappedFragment: React.FC = () => {
                                     validateToken(
                                         typedUsername,
                                         typedPassword,
-                                        () => { setIsLogged(true) },
-                                        () => { alert("Log in failed.")}
+                                        () => {
+                                            setIsLogged(true);
+                                            alert("Log in succ.");
+                                            Cookies.set("username", typedUsername);
+                                            Cookies.set("password", typedPassword);
+                                        },
+                                        () => { alert("Log in failed.") }
                                     )
                                 }} />
                         </div>

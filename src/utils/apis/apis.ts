@@ -3,23 +3,45 @@ import { IMergedPersonaCustomedProps } from "../../interfaces/IPersonas";
 import { IPageManifest } from "../../interfaces/IPageManifest";
 import { IOpendataItem } from "../../interfaces/IOpendata";
 
+import Cookies from 'js-cookie'
+
+function getUserConfigsFromCookie() {
+    let ret = { username: "", password: "" }
+    if (Cookies.get("username") != undefined) {
+        ret.username = Cookies.get("username")!
+    }
+    if (Cookies.get("password") != undefined) {
+        ret.password = Cookies.get("password")!
+    }
+    return ret;
+}
+
+
 export const uploadPersonaUrl = "/console/api-upload-personas/";
-export function uploadPersona(_file: File, _callback: () => void) {
+export function uploadPersona(_file: File,
+    _successCallback: () => void = () => { },
+    _failCallback: () => void = () => { }) {
     try {
         var form = new FormData();
         form.append("file", _file);
+
+        const cookie = getUserConfigsFromCookie();
+        form.append("username", cookie.username);
+        form.append("password", cookie.password);
+
         var xhr = new XMLHttpRequest();
         xhr.open("POST", uploadPersonaUrl, true);
-        xhr.send(form)
+
         xhr.onload = function () {
-            _callback()
-            // if (xhr.readyState == 4 && xhr.status == 200) {
-            //     alert("upload success")
-            // } else if (xhr.readyState == 4) {
-            //     alert("upload failed")
-            //     return;
-            // };
+            if (xhr.readyState == 4 && xhr.status == 200 && JSON.parse(xhr.responseText).result == "success") {
+                _successCallback();
+                return;
+            } else if (xhr.readyState == 4) {
+                _failCallback();
+                return;
+            };
         };
+        xhr.send(form)
     } catch{
 
     }
@@ -29,11 +51,20 @@ export const uploadManifestUrl = "/console/api-update-manifest/";
 export function uploadManifest(manifestName: "personas" | "opendata" | "pages", jsonObject: Object, _callback: () => void = () => { }) {
     try {
         var form = new FormData();
+        form.append("file", JSON.stringify(jsonObject));
         var xhr = new XMLHttpRequest();
         xhr.open("POST", uploadManifestUrl + manifestName, true);
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send(JSON.stringify(jsonObject))
-        xhr.onload = function () { if (xhr.readyState == 4 && xhr.status == 200) _callback(); else alert("Error") };
+        const cookie = getUserConfigsFromCookie();
+        form.append("username", cookie.username);
+        form.append("password", cookie.password);
+        xhr.onload = function () {
+            if (xhr.readyState == 4
+                && xhr.status == 200
+                && JSON.parse(xhr.responseText).result == "success")
+                _callback();
+            else alert("Error")
+        };
+        xhr.send(form)
     } catch (e) {
         console.log(e)
     }
@@ -60,11 +91,13 @@ export function uploadPageThumbnail(fileObject: File,
     try {
         var form = new FormData();
         form.append("file", fileObject);
+        const cookie = getUserConfigsFromCookie();
+        form.append("username", cookie.username);
+        form.append("password", cookie.password);
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/console/api-upload-image/", true);
-        xhr.send(form)
         xhr.onload = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+            if (xhr.readyState == 4 && xhr.status == 200 && JSON.parse(xhr.responseText).result == "success") {
                 _successCallback();
                 return;
             } else if (xhr.readyState == 4) {
@@ -72,6 +105,7 @@ export function uploadPageThumbnail(fileObject: File,
                 return;
             };
         };
+        xhr.send(form)
     } catch{
 
     }
@@ -84,12 +118,15 @@ export function uploadPageResources(fileObject: File,
 ) {
     try {
         var form = new FormData();
+        const cookie = getUserConfigsFromCookie();
+        form.append("username", cookie.username);
+        form.append("password", cookie.password);
         form.append("file", fileObject);
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/console/api-upload-page-resources/" + pageRoute, true);
-        xhr.send(form)
+
         xhr.onload = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+            if (xhr.readyState == 4 && xhr.status == 200 && JSON.parse(xhr.responseText).result == "success") {
                 _successCallback();
                 return;
             } else if (xhr.readyState == 4) {
@@ -97,6 +134,7 @@ export function uploadPageResources(fileObject: File,
                 return;
             };
         };
+        xhr.send(form)
     } catch{
 
     }
@@ -108,13 +146,16 @@ export function uploadPageMarkdown(mdStr: string,
     _failCallback: () => void = () => { }
 ) {
     try {
+        console.log(mdStr)
         var form = new FormData();
         form.append("file", mdStr);
         var xhr = new XMLHttpRequest();
+        const cookie = getUserConfigsFromCookie();
+        form.append("username", cookie.username);
+        form.append("password", cookie.password);
         xhr.open("POST", "/console/api-upload-markdown/" + pageRoute, true);
-        xhr.send(form)
         xhr.onload = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+            if (xhr.readyState == 4 && xhr.status == 200 && JSON.parse(xhr.responseText).result == "success") {
                 _successCallback();
                 return;
             } else if (xhr.readyState == 4) {
@@ -122,6 +163,7 @@ export function uploadPageMarkdown(mdStr: string,
                 return;
             };
         };
+        xhr.send(form)
     } catch{
 
     }
@@ -139,10 +181,10 @@ export function validateToken(userName: string,
         form.append("password", password);
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/console/api-login/", true);
-        xhr.send(form)
         xhr.onload = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                if (JSON.parse(xhr.response.text).result = "success")
+                //console.log(xhr)
+                if (JSON.parse(xhr.responseText).result == "success")
                     _successCallback();
                 else
                     _failCallback();
@@ -152,6 +194,7 @@ export function validateToken(userName: string,
                 return;
             };
         };
+        xhr.send(form)
     } catch{
 
     }
