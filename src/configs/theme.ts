@@ -1,5 +1,7 @@
 import { createTheme } from "office-ui-fabric-react";
 
+export const AccentFont = "Product Sans"
+
 export const AccentColors = createTheme({
     palette: {
         themePrimary: '#d13438',
@@ -24,10 +26,15 @@ export const AccentColors = createTheme({
         neutralDark: '#201f1e',
         black: '#000000',
         white: '#ffffff',
-    }
+    },
+    fonts: {
+        xxLarge: { fontFamily: AccentFont },
+        xxLargePlus: { fontFamily: AccentFont },
+        superLarge: { fontFamily: AccentFont },
+        mega: { fontFamily: AccentFont },
+    },
+    defaultFontStyle: { fontFamily: 'Product Sans, Roboto, Inter, 思源黑体 CN, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif' },
+
 });
 
-export const theme = createTheme({
-    defaultFontStyle: { fontFamily: 'Inter, 思源黑体 CN' },
-    palette: AccentColors.palette,
-});
+export const theme = createTheme(AccentColors);

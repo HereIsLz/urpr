@@ -2,11 +2,10 @@ Socio-spatial differentiation has been identified not only in capitalist market 
 
 ![Location quotient of three social strata in 2005 and 2010](/pages/Visualizing-fine-grained-socio-spatial-landscape-in-Beijing.assets/1599025388215.png)
 
-Location quotient of three social strata in 2005 and 2010
+<div style="width:100%;text-align:center">Location quotient of three social strata in 2005 and 2010</div>
 
 
 
-### Related Publications
+## Related Publications
 
-[Liu, L., Silva, E. A., & Long, Y. (2019). Block-level dynamics of socio-economic spatial differentiation in Beijing: Trends and processes. *Urban Studies*, *56*(6), 1198-1214. ](https://journals.sagepub.com/doi/full/10.1177/0042098018757617)
-
+<a class="publication-link" href="https://journals.sagepub.com/doi/full/10.1177/0042098018757617">Liu, L., Silva, E. A., & Long, Y. (2019). Block-level dynamics of socio-economic spatial differentiation in Beijing: Trends and processes. Urban Studies, 56(6), 1198-1214. </a>

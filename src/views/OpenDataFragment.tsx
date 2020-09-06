@@ -29,12 +29,12 @@ export const OpenDataFragment: React.FC = () => {
     return <div>
 
         <div style={navigatePlaceHolderStyle}>
-            <DesktopNavigation alwaysColored />
+            <DesktopNavigation alwaysColored blocked />
         </div>
-
+        <div style={{ width: "100%", height: 24 }} />
         <ResponsiveDiv slimmed>
             <LinkBlocks linksJsonUrl="/opendata.json" />
         </ResponsiveDiv>
-        <RoomForFootnot/>
+        <RoomForFootnot />
     </div>
 }

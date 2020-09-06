@@ -28,13 +28,13 @@ export class LinkBlocks extends React.Component<ILinkBlockProps, ILinkBlockState
     private renderLink(link: IOpendataItem) {
         return <div style={{ margin: '36px 0' }}>
             <Text block variant="superLarge" >{link.name}</Text>
-            <Text block variant="large" style={{ paddingTop: 12 }}>
+            <Text block variant="large" style={{ paddingTop: 12, textAlign: "justify", lineHeight: 1.5 }}>
                 {link.description}
             </Text>
             <Text block variant="large" style={{ paddingTop: 12 }}>
                 <a href={link.linkUrl} style={{ paddingBottom: 2 }}>
                     {link.linkText}
-                    <FontIcon iconName="Download" style={{ verticalAlign: 'middle',paddingLeft:8 }} />
+                    <FontIcon iconName="Download" style={{ verticalAlign: 'middle', paddingLeft: 8 }} />
                 </a>
             </Text>
         </div>
@@ -52,8 +52,7 @@ export class LinkBlocks extends React.Component<ILinkBlockProps, ILinkBlockState
 
 
     render() {
-        console.log(this.state)
-        return <div style={{width:"100%"}}>
+        return <div style={{ width: "100%" }}>
             {this.renderLinks(this.state.links)}
         </div>
     }

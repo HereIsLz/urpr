@@ -7,7 +7,7 @@ import { theme } from '../configs/theme';
 
 
 export const UrprLogo: React.FC = () => {
-    return <Text variant="xxLarge" aria-label={UrprDesc}
+    return <Text variant="xxLargePlus" aria-label={UrprDesc}
         onClick={() => { window.location.pathname = "/" }}
         style={{
             alignItems: 'center',
@@ -20,7 +20,10 @@ export const UrprLogo: React.FC = () => {
             MozUserSelect: 'none',
             WebkitUserSelect: 'none',
             userSelect: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            fontSize: 36
+            //fontFamily: "Josefin Sans",
+            //fontFamily: "Product Sans"
         }}>
         {UrprAbbr}
     </Text>

@@ -1,5 +1,5 @@
 export const UrprAbbr = "URPR"
-export const UrprFull = "Urban and Rural Policy Research"
+export const UrprFull = "Urban & Rural Policy Research"
 export const UrprZh = "城市与农村政策研究"
 
 export const UrprDesc = `${UrprAbbr} - ${UrprZh}`

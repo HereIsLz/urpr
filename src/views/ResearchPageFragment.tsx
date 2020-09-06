@@ -12,6 +12,7 @@ import { Markdown } from '../components/markdown/Markdown';
 import { UrprAbbr } from '../configs/strings';
 import { theme } from '../configs/theme';
 import { formatTime } from '../utils/FormatDate';
+import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
     width: "100%",
@@ -41,7 +42,7 @@ export interface IAutoAlignedMetaDivProps {
 export const AutoAlignedTitleDiv: React.FC<IAutoAlignedTitleDivProps> = (props) => {
     const { width } = useViewport()
     return <div style={width > breakpointMedium ?
-        { margin: '72px 0 24px 0', width: "84%", paddingLeft: "8%", textAlign: 'center' }
+        { margin: '72px 0 24px 0', width: "80%" }
         :
         { margin: '72px 0 24px 0' }
     }>
@@ -52,15 +53,14 @@ export const AutoAlignedTitleDiv: React.FC<IAutoAlignedTitleDivProps> = (props) 
 export const AutoAlignedMetaDiv: React.FC<IAutoAlignedMetaDivProps> = (props) => {
     const { width } = useViewport()
     return <div style={width > breakpointMedium ?
-        { padding: '4px 0 12px 0', textAlign: 'center' }
+        { padding: '4px 0 12px 0'}
         :
         { padding: '4px 0 12px 0' }
     }>
         {props.publishedTimestamp != undefined &&
             <Text variant="medium" style={{ color: theme.palette.neutralTertiary }}>
                 {formatTime(props.publishedTimestamp)}
-            </Text>
-        }
+            </Text> }
         {(props.author != undefined && props.publishedTimestamp != undefined) &&
             <Text variant="medium" style={{ color: theme.palette.neutralQuaternary }}>&nbsp;·&nbsp;</Text>}
         <Text variant="medium" style={{ color: theme.palette.themePrimary }}>
@@ -82,7 +82,7 @@ export class ResearchPageFragment extends React.Component<IResearchPageFragmentP
     }
 
     private fetchPageManifest() {
-        fetchJsonWithProgress("/pages/manifest.json")
+        fetchJsonWithProgress("/pages.json")
             .then(
                 (mani: IPageManifest[]) => {
                     //console.log(mani)
@@ -118,6 +118,8 @@ export class ResearchPageFragment extends React.Component<IResearchPageFragmentP
                     <Markdown unparsedContentString={this.state.markdownString} />
                 </div>
             </ResponsiveDiv>
+
+            <RoomForFootnot/>
         </div>
     }
 }

@@ -25,7 +25,7 @@ export async function fetchTextWithProgress(url: string): Promise<string> {
     }
     fetchItemCount++;
     document.getElementById('navigate-shimmer')?.classList.add('shimmering')
-    return await (await fetch(url)).text()
+    return await (await fetch(url, { cache: "no-store" })).text()
         .then(
             str => { fetchedItemsStorage.push({ key: url, value: str, expire: new Date().getTime() + EXPIRE_TIME_MILLISECOND }); return str }
         )
@@ -48,7 +48,7 @@ export async function fetchJsonWithProgress(url: string): Promise<any> {
     }
     fetchItemCount++;
     document.getElementById('navigate-shimmer')?.classList.add('shimmering')
-    return await (await fetch(url)).json()
+    return await (await fetch(url, { cache: "no-store" })).json()
         .then(
 
             json => { fetchedItemsStorage.push({ key: url, value: json, expire: new Date().getTime() + EXPIRE_TIME_MILLISECOND }); return json }

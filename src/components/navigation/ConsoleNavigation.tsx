@@ -22,23 +22,24 @@ export interface IConsolePivotConfig {
     key: string
 }
 
-export const consolePivotConfigs: IConsolePivotConfig[] = [
+const consolePivotConfigs: IConsolePivotConfig[] = [
     {
-        name: "Edit Research Pages",
+        name: "Research Pages",
         key: "research"
     },
     {
-        name: "Edit Team Members",
+        name: "Team Members",
         key: "team"
     },
     {
-        name: "Edit Open Data",
+        name: "Open Data",
         key: "opendata"
     }
 ]
 
 export interface IConsoleNavigationProps {
     isLogged?: boolean
+    blocked?: boolean
 }
 export const ConsoleNavigation: React.FunctionComponent<IConsoleNavigationProps> = (props) => {
 
@@ -66,19 +67,21 @@ export const ConsoleNavigation: React.FunctionComponent<IConsoleNavigationProps>
                                 link: { height: NAVIGATION_LAYOUT.height },
                                 linkIsSelected: { height: NAVIGATION_LAYOUT.height },
                                 linkContent: { minWidth: NAVIGATION_LAYOUT.linkMinWidth, fontSize: NAVIGATION_LAYOUT.linkTextSize, textRendering: "legibility" }
-                            }}>
+                            }}
+                            selectedKey={editingKey}
+                            onLinkClick={(item, ev) => { if (item?.props.itemKey != undefined) setEditingKey(item?.props.itemKey) }}>
                             {!props.isLogged ? [] : consolePivotConfigs.map(e => <PivotItem headerText={e.name} key={e.key} itemKey={e.key} />)}
                         </Pivot>
 
                     </Stack>
                 </ResponsiveDiv>
             </div>
-            <div style={{
+            {props.blocked && <div style={{
                 background: theme.palette.neutralLighter,
                 width: '100%',
                 height: NAVIGATION_LAYOUT.height,
                 borderBottom: `1px solid ${theme.palette.neutralLight}`
-            }} />
+            }} />}
         </header>
     );
 

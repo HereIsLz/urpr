@@ -8,10 +8,13 @@ The data is visualized in a calendar view with colors representing the daily ave
 
 ![img](/pages/Untitled.assets/clip_image002-1599025171513.jpg)
 
-Level of pollution in Beijing 2007-2018
+
+
+<div style="width:100%;text-align:center">Level of pollution in Beijing 2007-2018</div>
 
 
 
 ### Related Publications
 
-[Liu, L., Silva, E. A., Liu, J. (2018). A decade of battle on PM2.5 in Beijing. *Environment and Planning A: Economy and Space*, *50*(8), 1549-1552. ](https://journals.sagepub.com/doi/full/10.1177/0308518X18766633)
+<a class="publication-link" href="ttps://journals.sagepub.com/doi/full/10.1177/0308518X18766633">Liu, L., Silva, E. A., Liu, J. (2018). A decade of battle on PM2.5 in Beijing. *Environment and Planning A: Economy and Space*, *50*(8), 1549-1552. </a>
+

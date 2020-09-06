@@ -1,8 +1,9 @@
 export interface IPersonaCustomedProps {
-    thumbnail?: string,
-    imageInitials: string,
     name: string,
     role: string,
+    thumbnail?: string,
+    imageInitials?: string,
+
     linkText?: string,
     linkUrl?: string,
     link2Text?: string,

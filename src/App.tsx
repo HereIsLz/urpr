@@ -7,6 +7,7 @@ import { TeamFragment } from './views/TeamFragment';
 import { OpenDataFragment } from './views/OpenDataFragment';
 import { ResearchPageFragment } from './views/ResearchPageFragment';
 import { ConsoleFragment } from './views/ConsoleFragment';
+import { ConsoleWrappedFragment } from './views/ConsoleLoginFragment';
 
 
 class App extends Component {
@@ -22,7 +23,7 @@ class App extends Component {
       case "team":
         return <TeamFragment />
       case "console":
-        return <ConsoleFragment />
+        return <ConsoleWrappedFragment />
       default:
         return <IndexFragment />
     }

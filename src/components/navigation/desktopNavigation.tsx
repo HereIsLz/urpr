@@ -29,7 +29,8 @@ export const pivotConfigs: IPivotConfig[] = [
     },
     {
         name: "Updates",
-        route: "/update"
+        route: "",
+        
     },
     {
         name: "Open Data",
@@ -58,6 +59,7 @@ export const consolePivotConfigs: IPivotConfig[] = [
 
 export interface IDesktopNavigationProps {
     alwaysColored?: boolean
+    blocked?: boolean
 }
 export const DesktopNavigation: React.FunctionComponent<IDesktopNavigationProps> = (props) => {
 
@@ -98,6 +100,12 @@ export const DesktopNavigation: React.FunctionComponent<IDesktopNavigationProps>
                 </ResponsiveDiv>
                 <NavigateShimmer />
             </div>
+            {props.blocked && <div style={{
+                background: theme.palette.neutralLighter,
+                width: '100%',
+                height: NAVIGATION_LAYOUT.height,
+                borderBottom: `1px solid ${theme.palette.neutralLight}`
+            }} />}
             <MobilePivot navLinkGroups={pivotConfigs} revealed={isOpen && (width <= breakpointMedium)} />
         </header>
     );

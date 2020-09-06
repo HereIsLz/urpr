@@ -16,7 +16,8 @@ const footnoteContainerStyle: React.CSSProperties = {
 export const Footnote: React.FC = () => {
     return <div style={footnoteContainerStyle}>
         <ResponsiveDiv>
-            <Text variant="medium" styles={{ root: { lineHeight: FOOTNOTE_LAYOUT.height, color: theme.palette.neutralTertiary } }}>Copyright © URPR - 城市与农村政策研究. All rights reserved.</Text>
+            <Text variant="medium" styles={{ root: { lineHeight: FOOTNOTE_LAYOUT.height, color: theme.palette.neutralTertiary } }}>
+                Copyright © URPR. All rights reserved.</Text>
         </ResponsiveDiv>
     </div >
 }

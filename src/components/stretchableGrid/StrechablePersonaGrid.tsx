@@ -8,7 +8,7 @@ import { IPage } from '@fluentui/react';
 import { theme } from '../../configs/theme';
 import { FontIcon, mergeStyles, Text, Image } from "@fluentui/react";
 import { PersonaInitialsColor } from 'office-ui-fabric-react/lib/Persona';
-import { resolveStaticImages } from '../../configs/resources';
+import { resolveStaticImages, resolvePersonaImages } from '../../configs/resources';
 import { IPersonaCustomedProps, IMergedPersonaCustomedProps } from '../../interfaces/IPersonas';
 
 export interface IStretchablePersonaGridProps {
@@ -55,11 +55,6 @@ export class StretchablePersonaGrid extends React.Component<IStretchablePersonaG
         fetchJsonWithProgress(this.props.personaManifestUrl).then(e => { this.setState({ personas: e }) })
     }
 
-    private getGrids(manifest: IPersonaCustomedProps[]): JSX.Element[] {
-        return manifest.map(
-            renderPersonaFromPersonaManifest_portrait
-        )
-    }
 
     private getGroupedGrids(mergedManifests: IMergedPersonaCustomedProps[]): JSX.Element[] {
         return mergedManifests.map(
@@ -68,7 +63,11 @@ export class StretchablePersonaGrid extends React.Component<IStretchablePersonaG
                     <Text variant="xLarge" style={{ lineHeight: 2, color: theme.palette.neutralPrimary }}>
                         {e.role} </Text>
                 </div>
-                <GridWrapper>{this.getGrids(e.personas)}</GridWrapper>
+                <GridWrapper>{
+                    e.personas.map(
+                        st => <RenderPersonaFromPersonaManifest_portrait e={st} />
+                    )}
+                </GridWrapper>
             </div>
         )
     }
@@ -90,46 +89,49 @@ export const textHash = (text: string) => {
     return (hash & 0x7FFFFFFF);
 }
 
-export const renderPersonaFromPersonaManifest = (e: IPersonaCustomedProps) => {
-
-    const nameAbbr = e.name.split(" ").map(i => i[0]).join("").substr(0, 2)
-    return <div style={{ height: 180 }} >
-        <div style={{ float: 'left', width: 120, height: "100%", display: "table", textAlign: "center", background: personaInitialsColorToHexCode((textHash(nameAbbr) + 2) % 25) }} >
-            {e.thumbnail ? <Image src={resolveStaticImages(e.thumbnail)} styles={{ root: { width: "100%", height: 180 }, image: { width: "100%", height: "100%" } }} />
-                : <Text variant="xxLarge" style={{ color: '#fff', display: 'table-cell', verticalAlign: 'middle' }}>{nameAbbr}</Text>}
-        </div>
-        <div style={{ height: 180, display: "inline-block", width: "calc(100% - 138px)", marginLeft: 18 }} >
-            <Text variant="large" block >{e.name}</Text>
-            <Text variant="medium" block style={{ marginTop: 8 }}>{e.role}</Text>
-            {e.linkText && <Text variant="medium" block style={{ marginTop: 8 }}>
-                <a href={e.linkUrl} target={e.linkUrl!.startsWith("http") ? "_blank" : undefined}>
-                    <FontIcon iconName={e.linkUrl!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.linkText}</a>
-            </Text>}
-            {e.link2Text && <Text variant="medium" block style={{ marginTop: 8 }}>
-                <a href={e.link2Url} target={e.link2Url!.startsWith("http") ? "_blank" : undefined}>
-                    <FontIcon iconName={e.link2Url!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.link2Text}</a>
-            </Text>}
-        </div>
-    </div>
+// export const renderPersonaFromPersonaManifest = (e: IPersonaCustomedProps) => {
+//     const nameAbbr = e.name.split(" ").map(i => i[0]).join("").substr(0, 2)
+//     return <div style={{ height: 180 }} >
+//         <div style={{ float: 'left', width: 120, height: "100%", display: "table", textAlign: "center", background: personaInitialsColorToHexCode((textHash(nameAbbr) + 2) % 25) }} >
+//             {e.thumbnail ? <Image src={resolveStaticImages(e.thumbnail)} styles={{ root: { width: "100%", height: 180 }, image: { width: "100%", height: "100%" } }} />
+//                 : <Text variant="xxLarge" style={{ color: '#fff', display: 'table-cell', verticalAlign: 'middle' }}>{nameAbbr}</Text>}
+//         </div>
+//         <div style={{ height: 180, display: "inline-block", width: "calc(100% - 138px)", marginLeft: 18 }} >
+//             <Text variant="large" block >{e.name}</Text>
+//             <Text variant="medium" block style={{ marginTop: 8 }}>{e.role}</Text>
+//             {e.linkText && <Text variant="medium" block style={{ marginTop: 8 }}>
+//                 <a href={e.linkUrl} target={e.linkUrl!.startsWith("http") ? "_blank" : undefined}>
+//                     <FontIcon iconName={e.linkUrl!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.linkText}</a>
+//             </Text>}
+//             {e.link2Text && <Text variant="medium" block style={{ marginTop: 8 }}>
+//                 <a href={e.link2Url} target={e.link2Url!.startsWith("http") ? "_blank" : undefined}>
+//                     <FontIcon iconName={e.link2Url!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.link2Text}</a>
+//             </Text>}
+//         </div>
+//     </div>
+// }
+export interface IPortraitGridProps {
+    e: IPersonaCustomedProps
+    isBase64Style?: boolean
 }
-
-export const renderPersonaFromPersonaManifest_portrait = (e: IPersonaCustomedProps) => {
+export const RenderPersonaFromPersonaManifest_portrait: React.FC<IPortraitGridProps> = (props) => {
+    const { e } = props
     const nameAbbr = e.name.split(" ").map(i => i[0]).join("").substr(0, 2)
     return <div>
         <div style={{ width: "100%", height: 320, display: "table", textAlign: "center", background: personaInitialsColorToHexCode((textHash(nameAbbr) + 2) % 25) }} >
-            {e.thumbnail ? <Image src={resolveStaticImages(e.thumbnail)} styles={{ root: { width: "100%", height: 320 }, image: { width: "100%", height: "100%" } }} />
+            {e.thumbnail ? <Image src={props.isBase64Style ? e.thumbnail : resolvePersonaImages(e.thumbnail)} styles={{ root: { width: "100%", height: 320 }, image: { width: "100%", height: "100%" } }} />
                 : <Text variant="superLarge" style={{ color: '#fff', display: 'table-cell', verticalAlign: 'middle' }}>{nameAbbr}</Text>}
-        </div> 
+        </div>
         <div>
             <Text variant="large" block style={{ marginTop: 8 }}>{e.name}</Text>
             <Text variant="medium" block style={{ marginTop: 8 }}>{e.role}</Text>
-            {e.linkText && <Text variant="medium" block style={{ marginTop: 8 }}>
-                <a href={e.linkUrl} target={e.linkUrl!.startsWith("http") ? "_blank" : undefined}>
-                    <FontIcon iconName={e.linkUrl!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.linkText}</a>
+            {(e.linkText != undefined && e.linkUrl != undefined) && <Text variant="medium" block style={{ marginTop: 8 }}>
+                <a href={e.linkUrl} target={e.linkUrl.startsWith("http") ? "_blank" : undefined}>
+                    <FontIcon iconName={e.linkUrl.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.linkText}</a>
             </Text>}
-            {e.link2Text && <Text variant="medium" block style={{ marginTop: 8 }}>
-                <a href={e.link2Url} target={e.link2Url!.startsWith("http") ? "_blank" : undefined}>
-                    <FontIcon iconName={e.link2Url!.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.link2Text}</a>
+            {(e.link2Text != undefined && e.link2Url != undefined) && <Text variant="medium" block style={{ marginTop: 8 }}>
+                <a href={e.link2Url} target={e.link2Url.startsWith("http") ? "_blank" : undefined}>
+                    <FontIcon iconName={e.link2Url.startsWith("mailto") ? "Mail" : "Link"} style={{ verticalAlign: 'middle', marginRight: 4 }} />{e.link2Text}</a>
             </Text>}
         </div>
     </div>
@@ -162,7 +164,7 @@ function personaInitialsColorToHexCode(personaInitialsColor: PersonaInitialsColo
             return '#CA5010';
         // tslint:disable-next-line:deprecation
         case PersonaInitialsColor.red:
-            return '#EE1111';
+            return '#3C3E8a';
         case PersonaInitialsColor.lightRed:
             return '#D13438';
         case PersonaInitialsColor.darkRed:

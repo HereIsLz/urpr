@@ -3,13 +3,13 @@
         "role": "Principal Investigator",
         "personas": [
             {
-            "thumbnail": "persona1.jpg",
-            "name": "Lun Liu",
-            "role": "Assistant Professor & Researcher, Peking University",
-            "linkText": "Official Page",
-            "linkUrl": "https://www.sg.pku.edu.cn/szdw/zzjs/csyqyglx1/1318197.htm",
-            "link2Text": "liu.lun@pku.edu.cn",
-            "link2Url": "mailto:liu.lun@pku.edu.cn"
+                "thumbnail": "lun-liu.jpg",
+                "name": "Lun Liu",
+                "role": "Assistant Professor & Researcher, Peking University",
+                "linkText": "Official Page",
+                "linkUrl": "https://www.sg.pku.edu.cn/szdw/zzjs/csyqyglx1/1318197.htm",
+                "link2Text": "liu.lun@pku.edu.cn",
+                "link2Url": "mailto:liu.lun@pku.edu.cn"
             }
         ]
     },
@@ -21,7 +21,7 @@
                 "role": "Assistant Professor & Researcher",
                 "linkText": "https://baidu.com",
                 "linkUrl": "https://baidu.com",
-                "thumbnail": "hp.jfif"
+                "thumbnail": "harry-potter.jfif"
             },
             {
                 "name": "Tom Riddle",
@@ -43,7 +43,7 @@
             },
             {
                 "name": "Lun Liu",
-                "role": "Assistant Professor & Researcher, Peking University",
+                "role": "123",
                 "linkText": "https://baidu.com",
                 "linkUrl": "https://baidu.com"
             }

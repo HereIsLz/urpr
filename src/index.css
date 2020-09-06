@@ -1,8 +1,10 @@
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: "Product Sans", 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 18px;
+  font-variant-ligatures: no-common-ligatures;
 }
 
 code {
@@ -15,12 +17,13 @@ img {
 }
 
 .hover-card {
+  backdrop-filter: brightness(.3) saturate(.5);
   opacity: 0;
   transition: opacity .5s;
 }
 
 .hover-card:hover {
-  opacity: .9;
+  opacity: 1;
   transition: opacity .5s;
 }
 
@@ -35,45 +38,30 @@ img {
 }
 
 a:not(.ms-Nav-link) {
-  color: #0ca0f0;
+  color: #86898b;
   text-decoration: none;
   border-bottom: 2px solid transparent;
-  transition: all .4s;
+  transition: all .24s;
 }
 
 a:not(.ms-Nav-link):active {
-  color: #005da6;
+  color: #2b2d2e;
   text-decoration: none;
-  border-bottom: 2px solid #005da6;
+  border-bottom: 2px solid #2b2d2e;
   transition: all .3s;
 }
 
 a:not(.ms-Nav-link):hover {
-  color: #48bfff;
+  color: #a9b1b4;
   text-decoration: none;
-  border-bottom: 2px solid #48bfff;
-  transition: all .4s;
+  border-bottom: 2px solid #a9b1b4;
+  transition: all .24s;
 }
 
-a:not(.ms-Nav-link):visited {
-  color: #bc2f34;
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: all .4s;
-}
-
-a:not(.ms-Nav-link):visited:hover {
-  color: #ff5c61;
-  text-decoration: none;
-  border-bottom: 2px solid #ff5c61;
-  transition: all .3s;
-}
-
-a:not(.ms-Nav-link):visited:active {
-  color: #75090c;
-  text-decoration: none;
-  border-bottom: 2px solid #75090c;
-  transition: all .2s;
+.publication-link::after {
+  content: ' -->';
+  font-weight: 900;
+  font-family: 'inter';
 }
 
 .urpr-markdown>p {
@@ -83,7 +71,6 @@ a:not(.ms-Nav-link):visited:active {
 .urpr-markdown img {
   width: 100%;
   height: auto;
-  max-width: 640px;
   margin: 0 auto
 }
 
@@ -97,4 +84,12 @@ a:not(.ms-Nav-link):visited:active {
 
 .console-entry {
   opacity: .8;
+}
+
+.ms-Pivot-link::before,.ms-Pivot-link::after {
+  display: none;
+}
+
+.ms-GroupHeader-title{
+  font-variant-ligatures: no-common-ligatures;
 }

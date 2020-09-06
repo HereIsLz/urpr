@@ -4,7 +4,7 @@ import { FOOTNOTE_LAYOUT } from "./_layout"
 
 const roomStyle: React.CSSProperties = {
     width: '100%',
-    paddingTop: FOOTNOTE_LAYOUT.topPadding * 2,
+    paddingTop: FOOTNOTE_LAYOUT.topPadding,
     height: FOOTNOTE_LAYOUT.height,
 }
 

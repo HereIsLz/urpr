@@ -1,13 +1,13 @@
 [
     {
         "name": "Covid-19 State/Provincial Policy Tracker",
-        "description": "",
+        "description": "The dataset provides the state/provincial-level (or equivalent first-level subdivisions) public health and social measures taken in eight countries: China, Japan, Korea, Russia, UK, Germany, US and Brazil, which cover different continents and approaches towards Covid-19. The dataset presents all the state/provincial-level policies in each country from the outbreak of Covid-19 up to Aug 15, 2020.",
         "linkUrl": "/research/Covid-19-Policy-Tracker",
         "linkText": "Download"
     },
     {
         "name": "Mobile phone data-extracted daily activities of rural residents in Chengdu, China",
-        "description": "",
+        "description": "The dataset contains the characteristics of rural residents' daily activities in Chengdu, China, extracted from the mobile phone locations produced by China Unicom between April 12 and 18, 2017. The characteristics of daily activities are evaluated by grids of 1000m*1000m. The prefecture is divided into 14,856 grids. The characteristics include the number of distinct destination grids visited by the residents of a grid (diversity), the average number of activities/movements conducted by the residents of a grid (number), and the standard distances of work and nonwork activities conducted by the residents of a grid. For privacy, the information of grids where less than ten residents are identified is omitted. We also include the centroid coordinates, distance to the central city, average slope, and proportion of urban workers of each grid.",
         "linkUrl": "https://data.mendeley.com/datasets/w82ygwjy9c",
         "linkText": "Download from Mendeley Data"
     }

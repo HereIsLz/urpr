@@ -7,7 +7,7 @@ import { IManifestItem } from '../../interfaces/IManifestItem';
 
 import { theme } from '../../configs/theme';
 import { resolveStaticImages } from '../../configs/resources';
-import { Image } from "@fluentui/react";
+import { Image, mergeStyles } from "@fluentui/react";
 
 export interface IStretchableGridProps {
     manifestUrl: string
@@ -40,28 +40,39 @@ interface IPageThumbnailUnitGridProps {
 }
 
 const PageThumbnailUnitGridStyle: React.CSSProperties = {
-    background: theme.palette.themeLight,
+    //background: theme.palette.themeLight,
     width: '100%',
     height: "100%",
     position: "relative",
     overflow: "hidden",
-    cursor: "pointer"
+    cursor: "pointer",
+    background: theme.palette.neutralLight
 }
+
+const PageThumbnailUnitGridStyleDisabled: React.CSSProperties = {
+    //background: theme.palette.themeLight,
+    width: '100%',
+    height: "100%",
+    position: "relative",
+    overflow: "hidden",
+    background: theme.palette.neutralLight
+}
+
 const PageThumbnailUnitGridBackgroundStyle: React.CSSProperties = {
     width: '100%',
     height: "0"
 }
-const PageThumbnailTitleBgStyle: React.CSSProperties = {
-    background: theme.palette.themePrimary,
+export const PageThumbnailTitleBgStyle: React.CSSProperties = {
+    //background: theme.palette.themePrimary,
     color: '#fff',
     width: "100%",
     height: "100%",
     position: 'absolute',
 
 }
-const PageThumbnailTitleStyle: React.CSSProperties = {
+export const PageThumbnailTitleStyle: React.CSSProperties = {
     fontWeight: 700,
-    fontSize: 24,
+    fontSize: 20,
     padding: 24,
     position: 'absolute',
     bottom: 0,
@@ -69,15 +80,20 @@ const PageThumbnailTitleStyle: React.CSSProperties = {
     opacity: 1
 }
 export const PageThumbnailUnitGrid: React.FC<IPageThumbnailUnitGridProps> = (props) => {
-    return <div style={PageThumbnailUnitGridStyle} onClick={() => window.location.href = `research/${props.manifest.fileName}`}>
-        {props.manifest.thumbnail ? <Image shouldFadeIn src={resolveStaticImages(props.manifest.thumbnail)} styles={{ root: { width: '100%', height: "100%", position: "absolute" }, image: { width: '100%', height: "100%" } }} /> : null}
+    const isLinkValidate = props.manifest.fileName != undefined && props.manifest.fileName != "";
+    return <div style={isLinkValidate ? PageThumbnailUnitGridStyle : PageThumbnailUnitGridStyleDisabled}
+        onClick={() => { if (isLinkValidate) window.location.href = `research/${props.manifest.fileName}` }}>
+        {props.manifest.thumbnail ? <Image shouldFadeIn src={resolveStaticImages(props.manifest.thumbnail)}
+            styles={{
+                root: { width: '100%', height: "100%", position: "absolute" },
+                image: { width: '100%', height: "100%" }
+            }} /> : null}
+
         <div style={PageThumbnailTitleBgStyle} className="hover-card">
             <div style={PageThumbnailTitleStyle}>
                 {props.manifest.displayName}
             </div>
         </div>
-
-        <div></div>
     </div>
 }
 

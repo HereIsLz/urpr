@@ -10,7 +10,7 @@ import { breakpointMedium, breakpointLarge } from '../configs/dimens';
 import { StretchableGrid } from '../components/stretchableGrid/StreachableGrid';
 import { NAVIGATION_LAYOUT } from '../components/navigation/_layout';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
-import { StretchablePersonaGrid, renderPersonaFromPersonaManifest, renderPersonaFromPersonaManifest_portrait } from '../components/stretchableGrid/StrechablePersonaGrid';
+import { StretchablePersonaGrid } from '../components/stretchableGrid/StrechablePersonaGrid';
 import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
