@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Link, IGroup, Stack, PrimaryButton, DefaultButton, Modal, IconButton, Separator, Button, Dropdown } from '@fluentui/react';
+import { Link, IGroup, Stack, PrimaryButton, DefaultButton, Modal, IconButton, Separator, Button, Dropdown, MessageBar, MessageBarType } from '@fluentui/react';
 import {
     Text,
     DetailsList,
@@ -23,6 +23,8 @@ import { theme } from '../../configs/theme';
 import { stringify } from 'querystring';
 import { RenderPersonaFromPersonaManifest_portrait } from '../stretchableGrid/StrechablePersonaGrid';
 import { uploadPersona, uploadPersonasManifest, uploadManifest } from '../../utils/apis/apis';
+import { revealShimmer, hideShimmer } from '../../utils/fetchs/shimmerStatus';
+import { NavigateShimmer } from '../navigateShimmer';
 
 const margin = '0 30px 20px 0';
 const dragEnterClass = mergeStyles({
@@ -57,7 +59,12 @@ export interface ITeamMemberEditorDragDropStates {
 
     editingGroupName: string,
 
-    uploadingImageUrl?: string
+    uploadingImageUrl?: string,
+
+
+    displayMessageBar: boolean,
+    isUploadSuccess: boolean,
+    messageBarText: string
 }
 
 export interface ITeamMemberEditorDragDropProps {
@@ -136,7 +143,10 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
             isAddingPersona: false,
             editingPerona: Object.assign({}, emptyPersona),
             editingGroupName: "",
-            selectedGroup: ""
+            selectedGroup: "",
+            messageBarText: "",
+            isUploadSuccess: true,
+            displayMessageBar: false
         };
         this._selection = new Selection({ onSelectionChanged: () => { this.updateButtonStatus(); } });
         this.generateListItems()
@@ -193,30 +203,29 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
                         onRenderItemColumn={this._onRenderItemColumn}
                         styles={{ root: { width: "100%", overflowX: "hidden", height: "100%" } }} />
                 </div>
-                <div style={{ position: 'absolute', bottom: 0, padding: 12, background: '#fff', width: "calc(100% - 24px)", borderTop: `1px solid ${theme.palette.neutralLight}` }}>
+                <div style={{ position: 'absolute', bottom: 0, background: '#fff', width: "calc(100% - 24px)", borderTop: `1px solid ${theme.palette.neutralLight}` }}>
+                    <NavigateShimmer />
+                    <Stack horizontal tokens={{ childrenGap: 12 }} horizontalAlign="end" styles={{ root: { padding: 12 } }}>
+                        {
+                            this.state.displayMessageBar &&
+                            <MessageBar
+                                styles={{ root: { width: "inherit" } }}
+                                messageBarType={this.state.isUploadSuccess ? MessageBarType.success : MessageBarType.error}
+                                onDismiss={() => this.setState({ displayMessageBar: false })}>
+                                {this.state.isUploadSuccess ?
+                                    <span>{this.state.messageBarText}<Link href="/team" target="_blank">Visit team page</Link></span>
+                                    : this.state.messageBarText}
+                            </MessageBar>
+                        }
 
-                    <Stack horizontal horizontalAlign="space-between">
-
-                        <Stack horizontal tokens={{ childrenGap: 12 }}>
-                            {/* <DefaultButton text="Export as JSON" disabled={!canAddGroup}
-                                onClick={() => this._addGroupPopup()} />
-                            <DefaultButton text="Upload JSON" disabled={!canAddGroup}
-                                onClick={() => this._addGroupPopup()} />
-                            <DefaultButton text="Upload Persona" disabled={!canAddGroup}
-                                onClick={() => this._addGroupPopup()} /> */}
-                        </Stack>
-
-                        <Stack horizontal tokens={{ childrenGap: 12 }}>
-                            <DefaultButton text="Add Group" iconProps={{ iconName: "AddGroup" }} disabled={!canAddGroup}
-                                onClick={() => this._addGroupPopup()} />
-                            <DefaultButton text="Add Person" iconProps={{ iconName: "AddFriend" }} disabled={!canAddPerson}
-                                onClick={() => this._addPersonPopup()} />
-                            {/* <DefaultButton text="Edit" iconProps={{ iconName: "Edit" }} disabled={!canEditPerson}
+                        <DefaultButton text="Add Group" iconProps={{ iconName: "AddGroup" }} disabled={!canAddGroup}
+                            onClick={() => this._addGroupPopup()} />
+                        <DefaultButton text="Add Person" iconProps={{ iconName: "AddFriend" }} disabled={!canAddPerson}
+                            onClick={() => this._addPersonPopup()} />
+                        {/* <DefaultButton text="Edit" iconProps={{ iconName: "Edit" }} disabled={!canEditPerson}
                             onClick={() => this._editPersonPopup()} /> */}
-                            <DefaultButton text="Delete Person" iconProps={{ iconName: "Delete" }} disabled={!canDeletePerson} onClick={() => this._deletePersonConfirmed()} />
-                            <PrimaryButton text="Save" iconProps={{ iconName: "Save" }} disabled={!canSave} onClick={() => this._saveConfirmed()} />
-                        </Stack>
-
+                        <DefaultButton text="Delete Person" iconProps={{ iconName: "Delete" }} disabled={!canDeletePerson} onClick={() => this._deletePersonConfirmed()} />
+                        <PrimaryButton text="Save" iconProps={{ iconName: "Save" }} disabled={!canSave} onClick={() => this._saveConfirmed()} />
                     </Stack>
                 </div>
                 <Modal
@@ -437,10 +446,22 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
     }
 
     private _saveConfirmed() {
+        this.setState({ canSave: false })
+        revealShimmer();
         uploadManifest(
             "personas",
             this.state.personaGroups,
-            () => this.setState({ canSave: false })
+            () => {
+                hideShimmer();
+                this.setState({ displayMessageBar: true, isUploadSuccess: true, messageBarText: "Teams updated successfully." });
+                setTimeout(() => {
+                    this.setState({ displayMessageBar: false });
+                }, 2000);
+            },
+            () => {
+                this.setState({ canSave: true, displayMessageBar: true, isUploadSuccess: false, messageBarText: "Error occured saving manifest." });
+                hideShimmer();
+            }
         )
     }
 
@@ -462,7 +483,20 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
         if (newPersonaGroups.filter(e => e.role == this.state.selectedGroup).length > 0) {
             if (selectedImage != undefined && this.state.editingPerona.thumbnail != undefined) {
                 const fileName = selectedImage.name
-                uploadPersona(selectedImage, () => { })
+                revealShimmer()
+                uploadPersona(selectedImage,
+                    () => {
+                        hideShimmer();
+                        this.setState({ displayMessageBar: true, isUploadSuccess: true, messageBarText: "New avatar uploaded successfully." });
+                        setTimeout(() => {
+                            this.setState({ displayMessageBar: false });
+                        }, 1000);
+                    },
+                    () => {
+                        hideShimmer();
+                        this.setState({ displayMessageBar: true, isUploadSuccess: false, messageBarText: "Error occured uploading the new avatar." });
+                    }
+                )
                 const newEscapedPersona = Object.assign({}, this.state.editingPerona)
                 newEscapedPersona.thumbnail = fileName
                 newPersonaGroups.filter(e => e.role == this.state.selectedGroup)[0].personas.push(newEscapedPersona)

@@ -8,6 +8,8 @@ import { OpenDataFragment } from './views/OpenDataFragment';
 import { ResearchPageFragment } from './views/ResearchPageFragment';
 import { ConsoleFragment } from './views/ConsoleFragment';
 import { ConsoleWrappedFragment } from './views/ConsoleLoginFragment';
+import { OpenDataEditor } from './components/editors/OpenDataEditor';
+import { PageEditor } from './components/editors/PageEditor';
 
 
 class App extends Component {

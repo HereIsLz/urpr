@@ -48,7 +48,10 @@ export function uploadPersona(_file: File,
 }
 
 export const uploadManifestUrl = "/console/api-update-manifest/";
-export function uploadManifest(manifestName: "personas" | "opendata" | "pages", jsonObject: Object, _callback: () => void = () => { }) {
+export function uploadManifest(manifestName: "personas" | "opendata" | "pages",
+    jsonObject: Object,
+    _successCallback: () => void = () => { },
+    _failCallback: () => void = () => { }) {
     try {
         var form = new FormData();
         form.append("file", JSON.stringify(jsonObject));
@@ -61,8 +64,8 @@ export function uploadManifest(manifestName: "personas" | "opendata" | "pages", 
             if (xhr.readyState == 4
                 && xhr.status == 200
                 && JSON.parse(xhr.responseText).result == "success")
-                _callback();
-            else alert("Error")
+                _successCallback();
+            else _failCallback();
         };
         xhr.send(form)
     } catch (e) {

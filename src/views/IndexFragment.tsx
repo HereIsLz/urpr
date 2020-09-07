@@ -34,7 +34,7 @@ export const IndexFragment: React.FC = () => {
             <div style={{ display: "table", height: "100%", width: "100%", position: "relative" }}>
                 <div style={{ display: "table-cell", verticalAlign: "middle", paddingBottom: 80 }}>
                     <ResponsiveDiv>
-                        <div style={{ width: width > breakpointMedium ? "80%" : "90%", paddingLeft: width > breakpointMedium ? 60 : 0 }}>
+                        <div style={{ width: width > breakpointTiny ? "64%" : "90%", paddingLeft: width > breakpointTiny ? 60 : 0 }}>
                             <Text block variant={width > breakpointLarge ? "superLarge" : "xxLargePlus"}
                                 style={{
                                     color: theme.palette.neutralDark, lineHeight: 1.2,
@@ -50,10 +50,10 @@ export const IndexFragment: React.FC = () => {
                             </Text>
                         </div>
                         <div style={{
-                            width: width > breakpointMedium ? "64%" : "100%",
-                            lineHeight: width > breakpointMedium ? 1.8 : 1.5,
+                            width: width > breakpointTiny ? "64%" : "100%",
+                            lineHeight: width > breakpointTiny ? 1.8 : 1.5,
                             marginTop: 12,
-                            paddingLeft: width > breakpointMedium ? 60 : 0
+                            paddingLeft: width > breakpointTiny ? 60 : 0
                         }}>
                             <Text variant={width > breakpointLarge ? "xLarge" : "large"} style={{ fontWeight: 400 }}>{UrprDetail}</Text>
                         </div>

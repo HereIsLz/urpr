@@ -16,7 +16,10 @@ export interface IPageEditorStates {
     canSave: boolean,
     selectedCount: number,
     markdownPreviewString: string,
-    isNewPageRouteNailed: boolean
+    isNewPageRouteNailed: boolean,
+    displayMessageBar: boolean,
+    isUploadSuccess: boolean,
+    messageBarText: string
 }
 
 export const PageEditorContainerStyles = mergeStyleSets({
@@ -65,8 +68,7 @@ export const pageEditorIconButtonStyles = {
 export const emptyPageManifestItem: IPageManifest = {
     displayName: "",
     fileName: "",
-    thumbnail:"",
-    publishedTimestamp: new Date().getTime(),
-    author: "",
-    
+    thumbnail: "",
+    author: undefined,
+    publishedTimestamp: undefined
 }

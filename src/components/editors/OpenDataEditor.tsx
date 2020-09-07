@@ -1,17 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Link, IGroup, Stack, PrimaryButton, DefaultButton, Modal, IconButton, Separator, Button, Dropdown } from '@fluentui/react';
-import {
-    DetailsList,
-    Selection,
-    IColumn,
-    buildColumns,
-    IColumnReorderOptions,
-    IDragDropEvents,
-    IDragDropContext,
-} from '@fluentui/react';
-import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
-
+import { Link, IGroup, Stack, PrimaryButton, DefaultButton, Modal, IconButton, Separator, Button, Dropdown, MessageBar, MessageBarType } from '@fluentui/react';
+import { DetailsList, Selection, IColumn, buildColumns, IColumnReorderOptions, IDragDropEvents, IDragDropContext } from '@fluentui/react';
 import { TextField, ITextFieldStyles } from 'office-ui-fabric-react/lib/TextField';
 import { Toggle, IToggleStyles } from 'office-ui-fabric-react/lib/Toggle';
 import { getTheme, mergeStyles, mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
@@ -19,10 +9,10 @@ import { IPersonaCustomedProps, IMergedPersonaCustomedProps } from '../../interf
 import { fetchJsonWithProgress } from '../../utils/fetchs/fetchWithProgress';
 import { count } from 'console';
 import { theme } from '../../configs/theme';
-import { stringify } from 'querystring';
-import { RenderPersonaFromPersonaManifest_portrait } from '../stretchableGrid/StrechablePersonaGrid';
 import { uploadPersona, uploadPersonasManifest, uploadManifest } from '../../utils/apis/apis';
 import { IOpendataItem } from '../../interfaces/IOpendata';
+import { NavigateShimmer } from '../navigateShimmer';
+import { revealShimmer, hideShimmer } from '../../utils/fetchs/shimmerStatus';
 
 
 
@@ -43,7 +33,10 @@ export interface IOpenDataEditorStates {
     isAddingOpenDataItem: boolean,
     editingOpenDataItem: IOpendataItem,
     selectedCount: number,
-    canSave: boolean
+    canSave: boolean,
+
+    displayMessageBar: boolean,
+    isUploadSuccess: boolean
 }
 
 export interface IOpenDataEditorProps {
@@ -111,6 +104,8 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
             canSave: false,
             selectedCount: 0,
             editingOpenDataItem: { name: "", linkText: "", linkUrl: "", description: "" },
+            displayMessageBar: false,
+            isUploadSuccess: true
         }
         this._selection = new Selection({ onSelectionChanged: () => { this._onSelectionChanged(); } });
         this.generateListItems()
@@ -137,8 +132,20 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
                     styles={{ root: { width: "100%", overflowX: "hidden", height: "100%" } }} />
 
             </div>
-            <div style={{ position: 'absolute', bottom: 0, padding: 12, background: '#fff', width: "calc(100% - 24px)", borderTop: `1px solid ${theme.palette.neutralLight}` }}>
-                <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 12 }}>
+            <div style={{ position: 'absolute', bottom: 0, background: '#fff', width: "calc(100% - 24px)", borderTop: `1px solid ${theme.palette.neutralLight}` }}>
+                <NavigateShimmer />
+                <Stack horizontal horizontalAlign="end" tokens={{ childrenGap: 12 }} styles={{ root: { padding: 12 } }}>
+                    {
+                        this.state.displayMessageBar &&
+                        <MessageBar
+                            styles={{ root: { width: "inherit" } }}
+                            messageBarType={this.state.isUploadSuccess ? MessageBarType.success : MessageBarType.error}
+                            onDismiss={() => this.setState({ displayMessageBar: false })}>
+                            {this.state.isUploadSuccess ?
+                                <span>Updated successfully.<Link href="/opendata" target="_blank">Visit website</Link></span>
+                                : "Error occured."}
+                        </MessageBar>
+                    }
                     <DefaultButton text="Add" iconProps={{ iconName: "Add" }}
                         onClick={() => this._popupOpenDataItemEditor()} />
                     <DefaultButton text="Delete" iconProps={{ iconName: "Delete" }} disabled={this.state.selectedCount != 1} onClick={() => this._deleteOpenDataItem()} />
@@ -156,7 +163,6 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
                         onClick={() => this.setState({ isAddingOpenDataItem: false })} />
                 </div>
                 <div className={contentStyles.body}>
-
                     <Separator />
                     <Stack tokens={{ childrenGap: 12 }}>
                         <TextField label="name" required
@@ -208,6 +214,7 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
     };
 
     private _addOpenDataItem() {
+        //document.getElementById('navigate-shimmer')?.classList.add('shimmering');
         if (this.state.editingOpenDataItem.name.length <= 1
             || this.state.editingOpenDataItem.description.length <= 1
             || this.state.editingOpenDataItem.linkText.length <= 1
@@ -234,6 +241,20 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
     }
 
     private _saveOpenData() {
-        uploadManifest("opendata", this.state.opendata, () => this.setState({ canSave: true }))
+        this.setState({ canSave: false });
+        revealShimmer();
+        uploadManifest("opendata", this.state.opendata,
+            () => {
+                hideShimmer();
+                this.setState({ displayMessageBar: true, isUploadSuccess: true });
+                setTimeout(() => {
+                    this.setState({ displayMessageBar: false });
+                }, 2000);
+            },
+            () => {
+                hideShimmer();
+                this.setState({ canSave: true, displayMessageBar: true, isUploadSuccess: false });
+            }
+        )
     }
 }

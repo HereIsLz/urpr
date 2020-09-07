@@ -57,22 +57,10 @@ export const ConsoleNavigation: React.FunctionComponent<IConsoleNavigationProps>
                 borderBottom: `1px solid ${theme.palette.neutralLight}`
             }}>
                 <ResponsiveDiv>
-                    <Stack horizontal horizontalAlign="space-between" >
+                    <Stack horizontal horizontalAlign="start" >
                         <div style={{ height: NAVIGATION_LAYOUT.height }}>
                             <UrprConsoleLogo />
                         </div>
-                        <Pivot aria-label={`${UrprAbbr} - ${UrprZh}`}
-                            styles={{
-                                root: { height: NAVIGATION_LAYOUT.height },
-                                link: { height: NAVIGATION_LAYOUT.height },
-                                linkIsSelected: { height: NAVIGATION_LAYOUT.height },
-                                linkContent: { minWidth: NAVIGATION_LAYOUT.linkMinWidth, fontSize: NAVIGATION_LAYOUT.linkTextSize, textRendering: "legibility" }
-                            }}
-                            selectedKey={editingKey}
-                            onLinkClick={(item, ev) => { if (item?.props.itemKey != undefined) setEditingKey(item?.props.itemKey) }}>
-                            {!props.isLogged ? [] : consolePivotConfigs.map(e => <PivotItem headerText={e.name} key={e.key} itemKey={e.key} />)}
-                        </Pivot>
-
                     </Stack>
                 </ResponsiveDiv>
             </div>

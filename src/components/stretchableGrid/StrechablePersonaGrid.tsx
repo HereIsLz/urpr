@@ -58,7 +58,7 @@ export class StretchablePersonaGrid extends React.Component<IStretchablePersonaG
 
     private getGroupedGrids(mergedManifests: IMergedPersonaCustomedProps[]): JSX.Element[] {
         return mergedManifests.map(
-            e => <div>
+            e => e.personas.length > 0 ? <div>
                 <div style={{ margin: '32px 0 16px 0' }}>
                     <Text variant="xLarge" style={{ lineHeight: 2, color: theme.palette.neutralPrimary }}>
                         {e.role} </Text>
@@ -68,7 +68,7 @@ export class StretchablePersonaGrid extends React.Component<IStretchablePersonaG
                         st => <RenderPersonaFromPersonaManifest_portrait e={st} />
                     )}
                 </GridWrapper>
-            </div>
+            </div> : <div></div>
         )
     }
 

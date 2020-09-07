@@ -2,11 +2,11 @@ How is daily life like in rural China nowadays? Where do the rural residents wor
 
 We used the prefecture of Chengdu in west China as the case of study. From a week’s mobile phone trace data provided by China Unicom, we identified 0.97 million rural residents (17% of the rural population by official statistics) and studied their daily activity patterns, including the home-work locations pairs, the number and spatial range of movements per day, the diversity of destinations, etc. For example, we found that 7% of all rural labor forces in Chengdu commute to urban areas to conduct non-agricultural work, which is an unconventional lifestyle.
 
-![1599024954461](/pages/Chinese-rural-life-through-mobile-phone-data.assets/1599024954461.png)
+![New Figure](/pages/Chinese-rural-life-through-mobile-phone-data.assets/new-figure.jpg)
 
 <div style="width:100%;text-align:center">Home-work location pairs for rural residents in Chengdu</div>
 
-![1599024969520](/pages/Chinese-rural-life-through-mobile-phone-data.assets/1599024969520.png)
+![Final Figure](/pages/Chinese-rural-life-through-mobile-phone-data.assets/final-figure62.jpg)
 
 <div style="width:100%;text-align:center">Spatial range of rural residents’ activities </div>
 <div style="width:100%;text-align:center">(left: weekday, right: weekend, shaded: consolidated villages)</div>
