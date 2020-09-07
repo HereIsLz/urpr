@@ -1,5 +1,5 @@
 import React from 'react'
-import { DesktopNavigation } from '../components/navigation/desktopNavigation'
+import { DesktopNavigation, UrprNavigation } from '../components/navigation/desktopNavigation'
 import { resolveStaticImages } from '../configs/resources'
 import { ResponsiveDiv } from '../components/responsive/ResponisveDiv'
 import { Text, Separator } from "@fluentui/react";
@@ -25,11 +25,10 @@ const navigatePlaceHolderStyle: React.CSSProperties = {
 
 
 export const OpenDataFragment: React.FC = () => {
-    const { width } = useViewport();
     return <div>
 
         <div style={navigatePlaceHolderStyle}>
-            <DesktopNavigation alwaysColored blocked />
+            <UrprNavigation alwaysColored blocked />
         </div>
         <div style={{ width: "100%", height: 24 }} />
         <ResponsiveDiv slimmed>

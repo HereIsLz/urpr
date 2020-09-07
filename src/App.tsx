@@ -10,6 +10,7 @@ import { ConsoleFragment } from './views/ConsoleFragment';
 import { ConsoleWrappedFragment } from './views/ConsoleLoginFragment';
 import { OpenDataEditor } from './components/editors/OpenDataEditor';
 import { PageEditor } from './components/editors/PageEditor';
+import { UpdateFragment } from './views/UpdateFragment';
 
 
 class App extends Component {
@@ -24,6 +25,8 @@ class App extends Component {
         return <OpenDataFragment />
       case "team":
         return <TeamFragment />
+      case "update":
+        return <UpdateFragment />
       case "console":
         return <ConsoleWrappedFragment />
       default:

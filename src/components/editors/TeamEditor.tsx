@@ -358,7 +358,9 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
                             </div>
                         </Stack>
                         <Separator />
-                        <PrimaryButton text="Confirm" styles={{ root: { width: "100%" } }} onClick={() => this._addPersonConfirmed()} />
+                        <PrimaryButton
+                            disabled={!(this.state.editingPerona.name.length > 0 && this.state.editingPerona.role.length > 0)}
+                            text="Confirm" styles={{ root: { width: "100%" } }} onClick={() => this._addPersonConfirmed()} />
                     </div>
                 </Modal>
 
@@ -387,7 +389,8 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
                                 )
                             } />
                         <Separator />
-                        <PrimaryButton text="Confirm" styles={{ root: { width: "100%" } }} onClick={() => this._addGroupConfirmed()} />
+                        <PrimaryButton disabled={this.state.editingGroupName.length <= 0}
+                            text="Confirm" styles={{ root: { width: "100%" } }} onClick={() => this._addGroupConfirmed()} />
                     </div>
                 </Modal>
 

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Research",
+        "route": "/research"
+    },
+    {
+        "name": "Team",
+        "route": "/team"
+    },
+    {
+        "name": "Updates",
+        "route": "/update"
+    },
+    {
+        "name": "Open Data",
+        "route": "/opendata"
+    },
+    {
+        "name": "Covid-19",
+        "route": "/research/Covid-19-Policy-Tracker"
+    }
+]

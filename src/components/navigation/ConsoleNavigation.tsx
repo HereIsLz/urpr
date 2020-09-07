@@ -22,21 +22,6 @@ export interface IConsolePivotConfig {
     key: string
 }
 
-const consolePivotConfigs: IConsolePivotConfig[] = [
-    {
-        name: "Research Pages",
-        key: "research"
-    },
-    {
-        name: "Team Members",
-        key: "team"
-    },
-    {
-        name: "Open Data",
-        key: "opendata"
-    }
-]
-
 export interface IConsoleNavigationProps {
     isLogged?: boolean
     blocked?: boolean
@@ -68,7 +53,6 @@ export const ConsoleNavigation: React.FunctionComponent<IConsoleNavigationProps>
                 background: theme.palette.neutralLighter,
                 width: '100%',
                 height: NAVIGATION_LAYOUT.height,
-                borderBottom: `1px solid ${theme.palette.neutralLight}`
             }} />}
         </header>
     );

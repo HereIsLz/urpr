@@ -2,5 +2,6 @@ export interface IUpdatedNews{
     title: string,
     description: string,
     updatedTimestamp?: number,
-    imageUrl: string
+    imageUrl?: string,
+    //imageLayout?: number,
 }

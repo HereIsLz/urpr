@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from "react-dom";
 import { IPageEditorProps, IPageEditorStates, emptyPageManifestItem, PageEditorContainerStyles, pageEditorIconButtonStyles } from "./PagesEditorConfigs";
-import { buildColumns, DetailsList, IColumn, Selection, Stack, DefaultButton, PrimaryButton, Modal, IconButton, Separator, TextField, Text, DatePicker, MessageBar, MessageBarType } from '@fluentui/react';
+import { buildColumns, DetailsList, IColumn, Selection, Stack, DefaultButton, PrimaryButton, Modal, IconButton, Separator, TextField, Text, DatePicker, MessageBar, MessageBarType, IDragDropEvents, IDragDropContext } from '@fluentui/react';
 import { fetchJsonWithProgress } from '../../utils/fetchs/fetchWithProgress';
 import { IPageManifest } from '../../interfaces/IPageManifest';
 import { theme } from '../../configs/theme';
@@ -11,13 +11,17 @@ import { uploadPageResources, uploadManifest, uploadPageThumbnail, uploadPageMar
 import { revealShimmer, hideShimmer } from '../../utils/fetchs/shimmerStatus';
 import { NavigateShimmer } from '../navigateShimmer';
 import { Link } from "@fluentui/react";
-
+import { dragEnterClass } from "./OpenDataEditor";
+import { formatTime } from '../../utils/FormatDate';
 
 var uploadQueue: File[] = [];
 
 
 export class PageEditor extends React.Component<IPageEditorProps, IPageEditorStates>{
     private _selection: Selection;
+    private _dragDropEvents: IDragDropEvents;
+    private _draggedItem: IPageManifest | undefined;
+    private _draggedIndex: number;
     constructor(props: IPageEditorProps) {
         super(props)
         this.state = {
@@ -37,6 +41,8 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
         this._selection = new Selection(
             { onSelectionChanged: () => this._onSelectionChanged() }
         )
+        this._dragDropEvents = this._getDragDropEvents();
+        this._draggedIndex = -1;
         //this._fetchManifest(this.props.manifestUrl)
     }
 
@@ -57,12 +63,16 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
 
     private _onRenderItemColumn(item: IPageManifest, index?: number, column?: IColumn) {
         const key = column!.key as keyof IPageManifest;
-        if (key === 'displayName') {
-            return <span style={{ color: theme.palette.themeDark, fontWeight: 600 }}>{item[key]}</span>;
-        }
         if (item[key] == undefined) {
             return <span style={{ color: theme.palette.neutralQuaternaryAlt }}>undefined</span>;
         }
+        if (key === 'displayName') {
+            return <span style={{ color: theme.palette.themeDark, fontWeight: 600 }}>{item[key]}</span>;
+        }
+        else if (key === 'publishedTimestamp') {
+            return <span style={{ color: theme.palette.themeDark, fontWeight: 600 }}>{formatTime(item[key]!)}</span>;
+        }
+
         return String(item[key]);
     }
 
@@ -91,6 +101,50 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                 hideShimmer();
             }
         )
+    }
+
+    private _insertBeforeItem(item: IPageManifest): void {
+        const draggedItems = this._selection.isIndexSelected(this._draggedIndex)
+            ? (this._selection.getSelection() as IPageManifest[])
+            : [this._draggedItem!];
+
+        const insertIndex = this.state.pageManifest.indexOf(item);
+        const items = this.state.pageManifest.filter(itm => draggedItems.indexOf(itm) === -1);
+
+        items.splice(insertIndex, 0, ...draggedItems);
+
+        this.setState({ pageManifest: items, canSave: true });
+    }
+
+    private _getDragDropEvents(): IDragDropEvents {
+        return {
+            canDrop: (dropContext?: IDragDropContext, dragContext?: IDragDropContext) => {
+                return true;
+            },
+            canDrag: (item?: any) => {
+                return true;
+            },
+            onDragEnter: (item?: any, event?: DragEvent) => {
+                // return string is the css classes that will be added to the entering element.
+                return dragEnterClass;
+            },
+            onDragLeave: (item?: any, event?: DragEvent) => {
+                return;
+            },
+            onDrop: (item?: any, event?: DragEvent) => {
+                if (this._draggedItem) {
+                    this._insertBeforeItem(item);
+                }
+            },
+            onDragStart: (item?: any, itemIndex?: number, selectedItems?: any[], event?: MouseEvent) => {
+                this._draggedItem = item;
+                this._draggedIndex = itemIndex!;
+            },
+            onDragEnd: (item?: any, event?: DragEvent) => {
+                this._draggedItem = undefined;
+                this._draggedIndex = -1;
+            },
+        };
     }
 
     private _addPageItem() {
@@ -190,6 +244,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                     items={this.state.pageManifest}
                     columns={buildColumns([emptyPageManifestItem])}
                     selection={this._selection}
+                    dragDropEvents={this._dragDropEvents}
                     styles={{ root: { width: "100%", overflowX: "hidden", height: "100%" } }} />
 
             </div>
@@ -235,7 +290,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                                         iconProps={{ iconName: "Rename" }}
                                         required
                                         disabled={this.state.isNewPageRouteNailed}
-                                        placeholder={'Letters and dashes("-") ONLY'}
+                                        placeholder={'A-Z, a-z, 0-9, "-"'}
                                         onChange={(e, v) => this.setState({
                                             editingNewPage: Object.assign(
                                                 this.state.editingNewPage,
@@ -293,6 +348,12 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                             </Stack>
                             <div style={{ height: "calc(100% - 312px)" }}>
                                 <TextField label={"Content"}
+
+                                    disabled={
+                                        !(this.state.editingNewPage.fileName.length > 0 &&
+                                            /^[A-Za-z0-9\-]*$/g.test(this.state.editingNewPage.fileName)
+                                            && this.state.editingNewPage.displayName.length > 0)
+                                    }
                                     placeholder={"**Markdown** supported"}
                                     multiline resizable={false}
                                     styles={{
@@ -301,7 +362,15 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                                     }}
                                     onChange={(e, v) => { if (v != undefined && v.length > 0) this.setState({ markdownPreviewString: v }) }} />
                             </div>
-                            <DefaultButton text="Upload Images" iconProps={{ iconName: "PictureFill" }} styles={{ root: { width: "100%" } }} onClick={() => this._onClickUploadImageButton()} />
+                            <DefaultButton
+                                disabled={
+                                    !(this.state.editingNewPage.fileName.length > 0 &&
+                                        /^[A-Za-z0-9\-]*$/g.test(this.state.editingNewPage.fileName)
+                                        && this.state.editingNewPage.displayName.length > 0)
+                                }
+                                text="Upload Images"
+                                iconProps={{ iconName: "PictureFill" }}
+                                styles={{ root: { width: "100%" } }} onClick={() => this._onClickUploadImageButton()} />
 
                         </Stack>
                         <Separator vertical />
@@ -334,7 +403,13 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                         />
                     </Stack>
                     <Separator />
-                    <PrimaryButton text="Confirm" onClick={() => this._addPageItem()} styles={{ root: { width: "100%" } }} />
+                    <PrimaryButton
+                        disabled={
+                            !((this.state.editingNewPage.fileName.length == 0 ||
+                                /^[A-Za-z0-9\-]*$/g.test(this.state.editingNewPage.fileName))
+                                && this.state.editingNewPage.displayName.length > 0)
+                        }
+                        text="Confirm" onClick={() => this._addPageItem()} styles={{ root: { width: "100%" } }} />
                 </div>
             </Modal>
         </div>
@@ -354,7 +429,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                 () => {
                     hideShimmer();
                 },
-                () => { alert("Error occured uploading image."); hideShimmer(); }
+                () => { hideShimmer(); alert("Error occured uploading image."); }
             )
         }
     }

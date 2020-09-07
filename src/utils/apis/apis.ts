@@ -47,8 +47,37 @@ export function uploadPersona(_file: File,
     }
 }
 
+export function uploadOpenResource(_file: File,
+    _successCallback: () => void = () => { },
+    _failCallback: () => void = () => { }) {
+    try {
+        var form = new FormData();
+        form.append("file", _file);
+
+        const cookie = getUserConfigsFromCookie();
+        form.append("username", cookie.username);
+        form.append("password", cookie.password);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/console/api-upload-openresource/", true);
+
+        xhr.onload = function () {
+            if (xhr.readyState == 4 && xhr.status == 200 && JSON.parse(xhr.responseText).result == "success") {
+                _successCallback();
+                return;
+            } else if (xhr.readyState == 4) {
+                _failCallback();
+                return;
+            };
+        };
+        xhr.send(form)
+    } catch{
+
+    }
+}
+
 export const uploadManifestUrl = "/console/api-update-manifest/";
-export function uploadManifest(manifestName: "personas" | "opendata" | "pages",
+export function uploadManifest(manifestName: "personas" | "opendata" | "pages" | "pivot" | "banner" | "updates",
     jsonObject: Object,
     _successCallback: () => void = () => { },
     _failCallback: () => void = () => { }) {

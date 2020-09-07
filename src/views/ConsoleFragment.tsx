@@ -18,6 +18,7 @@ import { useScrollTop } from '../utils/hooks/useScrollTop';
 import { UrprConsoleLogo } from '../components/ConsoleLogo';
 import { OpenDataEditor } from '../components/editors/OpenDataEditor';
 import { PageEditor } from '../components/editors/PageEditor';
+import { BannerEditor } from '../components/editors/BannerEditor';
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
     width: "100%",
@@ -27,6 +28,10 @@ const navigatePlaceHolderStyle: React.CSSProperties = {
     msUserSelect: 'none',
 }
 const consolePivotConfigs: IConsolePivotConfig[] = [
+    {
+        name: "Banner",
+        key: "banner"
+    },
     {
         name: "Research Pages",
         key: "research"
@@ -38,7 +43,11 @@ const consolePivotConfigs: IConsolePivotConfig[] = [
     {
         name: "Open Data",
         key: "opendata"
-    }
+    },
+    {
+        name: "Updates",
+        key: "update"
+    },
 ]
 
 interface IConsoleFragmentProps {
@@ -88,7 +97,11 @@ export const ConsoleFragment: React.FC<IConsoleFragmentProps> = (props) => {
                 }} />
             </header>
         </div>
-
+        {
+            editingKey == "banner" && <ResponsiveDiv>
+                <BannerEditor manifestUrl="/banner.json" />
+            </ResponsiveDiv>
+        }
         {
             editingKey == "team" && <ResponsiveDiv>
                 <TeamMemberEditor manifestUrl="/personas.json" />

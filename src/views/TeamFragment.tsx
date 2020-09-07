@@ -1,5 +1,5 @@
 import React from 'react'
-import { DesktopNavigation } from '../components/navigation/desktopNavigation'
+import { DesktopNavigation, UrprNavigation } from '../components/navigation/desktopNavigation'
 import { resolveStaticImages } from '../configs/resources'
 import { ResponsiveDiv } from '../components/responsive/ResponisveDiv'
 import { Text, FontIcon } from "@fluentui/react";
@@ -54,7 +54,7 @@ export const TeamFragment: React.FC = () => {
     return <div>
 
         <div style={navigatePlaceHolderStyle}>
-            <DesktopNavigation alwaysColored />
+            <UrprNavigation alwaysColored />
         </div>
 
 
@@ -73,5 +73,5 @@ export const TeamFragment: React.FC = () => {
             </div>
         </ResponsiveDiv>
         <RoomForFootnot />
-    </div>
+    </div> 
 }

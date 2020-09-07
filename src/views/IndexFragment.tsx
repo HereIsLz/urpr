@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { DesktopNavigation } from '../components/navigation/desktopNavigation'
+import { DesktopNavigation, UrprNavigation } from '../components/navigation/desktopNavigation'
 import { resolveStaticImages } from '../configs/resources'
 import { ResponsiveDiv } from '../components/responsive/ResponisveDiv'
 import { Text, Image, ImageCoverStyle, ImageFit } from "@fluentui/react";
@@ -11,6 +11,7 @@ import { StretchableGrid } from '../components/stretchableGrid/StreachableGrid';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
 import { Footnote } from '../components/footnote/Footnote';
 import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
+import { fetchJsonWithProgress } from '../utils/fetchs/fetchWithProgress';
 
 const backgroundImageStyles: React.CSSProperties = {
     width: "100%",
@@ -21,14 +22,21 @@ const backgroundImageStyles: React.CSSProperties = {
     backgroundColor: theme.palette.neutralLight
 }
 
-export const IndexFragment: React.FC = () => {
+
+export interface IIndexFragmentStaticProps {
+    heroText: string,
+    heroText2: string,
+    description: string,
+    bgImageName?: string
+}
+
+export const IndexFragmentStatic: React.FC<IIndexFragmentStaticProps> = (props) => {
     const { width } = useViewport();
     return <div>
-
-        <DesktopNavigation alwaysColored blocked />
+        <UrprNavigation alwaysColored blocked />
         <div style={backgroundImageStyles}>
             <div style={{ height: 0, width: "100%", backgroundColor: theme.palette.neutralPrimary }}>
-                <Image src={resolveStaticImages("bg.jpg")} style={backgroundImageStyles} />
+                <Image src={props.bgImageName ? resolveStaticImages(props.bgImageName) : undefined} style={backgroundImageStyles} />
             </div>
 
             <div style={{ display: "table", height: "100%", width: "100%", position: "relative" }}>
@@ -38,15 +46,14 @@ export const IndexFragment: React.FC = () => {
                             <Text block variant={width > breakpointLarge ? "superLarge" : "xxLargePlus"}
                                 style={{
                                     color: theme.palette.neutralDark, lineHeight: 1.2,
-                                    //fontFamily: "Product Sans"
                                 }}>
-                                {UrprFull.toUpperCase()}
+                                {props.heroText}
                             </Text>
                             <Text block variant={width > breakpointLarge ? "superLarge" : "xxLargePlus"}
                                 style={{
                                     color: theme.palette.neutralDark, lineHeight: 1.2
                                 }}>
-                                {UrprZh}
+                                {props.heroText2}
                             </Text>
                         </div>
                         <div style={{
@@ -55,7 +62,9 @@ export const IndexFragment: React.FC = () => {
                             marginTop: 12,
                             paddingLeft: width > breakpointTiny ? 60 : 0
                         }}>
-                            <Text variant={width > breakpointLarge ? "xLarge" : "large"} style={{ fontWeight: 400 }}>{UrprDetail}</Text>
+                            <Text variant={width > breakpointLarge ? "xLarge" : "large"} styles={{ root: { fontWeight: 400, whiteSpace: "pre-wrap" } }}>
+                                {props.description}
+                            </Text>
                         </div>
                     </ResponsiveDiv>
                 </div>
@@ -67,7 +76,7 @@ export const IndexFragment: React.FC = () => {
             <div style={{ margin: '72px 0' }}>
                 <Text variant="superLarge" style={{
                     lineHeight: 2, textAlign: 'center', //fontFamily:"Product Sans"
-                }}>Our Research</Text>
+                }}>OUR RESEARCH</Text>
             </div>
 
         </ResponsiveDiv>
@@ -75,4 +84,23 @@ export const IndexFragment: React.FC = () => {
         <StretchableGrid manifestUrl="pages.json" />
         <RoomForFootnot />
     </div>
+}
+interface IIndexFragmentStates {
+    bannerConfig: IIndexFragmentStaticProps
+}
+
+export class IndexFragment extends React.Component<{}, IIndexFragmentStates>{
+    constructor() {
+        super({})
+        this.state = {
+            bannerConfig: {
+                heroText: UrprFull.toUpperCase(),
+                heroText2: UrprZh,
+                description: UrprDetail
+            }
+        }
+        fetchJsonWithProgress("/banner.json").then(st => this.setState({ bannerConfig: st }))
+    }
+
+    render() { return <IndexFragmentStatic {...this.state.bannerConfig} /> }
 }

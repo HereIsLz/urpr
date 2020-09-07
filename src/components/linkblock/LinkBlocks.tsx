@@ -2,6 +2,8 @@ import React from 'react'
 import { IOpendataItem } from '../../interfaces/IOpendata'
 import { fetchJsonWithProgress } from '../../utils/fetchs/fetchWithProgress'
 import { Text, FontIcon, Separator } from "@fluentui/react";
+import { formatTime } from '../../utils/FormatDate';
+import { theme } from '../../configs/theme';
 interface ILinkBlockProps {
     linksJsonUrl: string
 }
@@ -27,7 +29,13 @@ export class LinkBlocks extends React.Component<ILinkBlockProps, ILinkBlockState
     }
     private renderLink(link: IOpendataItem) {
         return <div style={{ margin: '36px 0' }}>
-            <Text block variant="superLarge" >{link.name}</Text>
+            <Text block variant="superLarge" style={{ width: "80%" }}>{link.name}</Text>
+            {
+                link.displayedDate != undefined &&
+                <Text block variant="large" style={{ paddingTop: 12, color: theme.palette.neutralTertiary, textAlign: "justify", lineHeight: 1.5 }}>
+                    {formatTime(link.displayedDate)}
+                </Text>
+            }
             <Text block variant="large" style={{ paddingTop: 12, textAlign: "justify", lineHeight: 1.5 }}>
                 {link.description}
             </Text>

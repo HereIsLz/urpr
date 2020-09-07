@@ -13,12 +13,13 @@ import { UrprFull } from "../../configs/strings";
 import { MobilePivot } from "./MobilePivot";
 import { UrprConsoleLogo } from "../ConsoleLogo";
 import { RESPONSIVE_LAYOUT } from "../responsive/_layout";
+import { fetchJsonWithProgress } from "../../utils/fetchs/fetchWithProgress";
 
 export interface IPivotConfig {
     name: string,
     route: string
 }
-export const pivotConfigs: IPivotConfig[] = [
+export const defaultPivotConfigs: IPivotConfig[] = [
     {
         name: "Research",
         route: "/research"
@@ -29,37 +30,20 @@ export const pivotConfigs: IPivotConfig[] = [
     },
     {
         name: "Updates",
-        route: "",
-        
+        route: "/update",
+
     },
     {
         name: "Open Data",
         route: "/opendata"
-    },
-    {
-        name: "Covid-19",
-        route: "/research/Covid-19-Policy-Tracker"
     }
 ]
 
-export const consolePivotConfigs: IPivotConfig[] = [
-    {
-        name: "Edit Research Pages",
-        route: "/console/research"
-    },
-    {
-        name: "Edit Team Members",
-        route: "/console/team"
-    },
-    {
-        name: "Edit Open Data",
-        route: "/console/opendata"
-    }
-]
 
 export interface IDesktopNavigationProps {
     alwaysColored?: boolean
-    blocked?: boolean
+    blocked?: boolean,
+    pivotConfigs: IPivotConfig[]
 }
 export const DesktopNavigation: React.FunctionComponent<IDesktopNavigationProps> = (props) => {
 
@@ -82,7 +66,7 @@ export const DesktopNavigation: React.FunctionComponent<IDesktopNavigationProps>
                         <div style={{ height: NAVIGATION_LAYOUT.height }}>
                             <UrprLogo />
                         </div>
-                        {width > breakpointMedium ? <DesktopPivot manifest={pivotConfigs} defaultSelectedPivotKey={"/" + window.location.pathname.split('/')[1]} />
+                        {width > breakpointMedium ? <DesktopPivot manifest={props.pivotConfigs} defaultSelectedPivotKey={"/" + window.location.pathname.split('/')[1]} />
                             :
                             <IconButton
                                 iconProps={{ iconName: isOpen ? "Clear" : "GlobalNavButton" }}
@@ -104,10 +88,31 @@ export const DesktopNavigation: React.FunctionComponent<IDesktopNavigationProps>
                 background: theme.palette.neutralLighter,
                 width: '100%',
                 height: NAVIGATION_LAYOUT.height,
-                borderBottom: `1px solid ${theme.palette.neutralLight}`
             }} />}
-            <MobilePivot navLinkGroups={pivotConfigs} revealed={isOpen && (width <= breakpointMedium)} />
+            <MobilePivot navLinkGroups={props.pivotConfigs} revealed={isOpen && (width <= breakpointMedium)} />
         </header>
     );
 
 };
+export interface IUrprNavigationProps {
+    alwaysColored?: boolean
+    blocked?: boolean,
+}
+export interface IUrprNavigationStates {
+    pivotConfigs: IPivotConfig[]
+}
+export class UrprNavigation extends React.Component<IUrprNavigationProps, IUrprNavigationStates>{
+    constructor(props: IUrprNavigationProps) {
+        super(props)
+        this.state = { pivotConfigs: [] }
+        this.updatePivotConfigs()
+    }
+
+    private updatePivotConfigs() {
+        fetchJsonWithProgress("/pivot.json").then(itm => this.setState({ pivotConfigs: itm }))
+    }
+
+    render() {
+        return <DesktopNavigation alwaysColored={this.props.alwaysColored} blocked={this.props.blocked} pivotConfigs={this.state.pivotConfigs} />
+    }
+}

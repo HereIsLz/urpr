@@ -1,7 +1,7 @@
 import React from "react"
 import { IDesktopNavigationProps } from "./desktopNavigation";
 import { Nav, INavLink, INavStyles, INavLinkGroup } from 'office-ui-fabric-react/lib/Nav';
-import { pivotConfigs, IPivotConfig } from "./desktopNavigation";
+import { IPivotConfig } from "./desktopNavigation";
 import { theme } from "../../configs/theme";
 import { NAVIGATION_LAYOUT } from "./_layout";
 import { mergeStyles } from "@fluentui/react";
@@ -41,7 +41,7 @@ const navStyles: Partial<INavStyles> = {
 };
 const genNavLinkGroups = (pvt: IPivotConfig[]): INavLinkGroup[] => [
     {
-        links: pivotConfigs.map(
+        links: pvt.map(
             function (e: IPivotConfig) {
                 return {
                     name: e.name,
@@ -57,8 +57,7 @@ export class MobilePivot extends React.Component<IMobilePivotProps, IMobilePivot
     constructor(props: IMobilePivotProps) {
         super(props)
         this.state = {
-            defaultSelectedKey: "/" + window.location.pathname.split('/')[1],
-            //revealed: false
+            defaultSelectedKey: "/" + window.location.pathname.split('/')[1], 
         }
     }
     render() {

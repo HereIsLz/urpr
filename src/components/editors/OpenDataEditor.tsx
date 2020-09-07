@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Link, IGroup, Stack, PrimaryButton, DefaultButton, Modal, IconButton, Separator, Button, Dropdown, MessageBar, MessageBarType } from '@fluentui/react';
+import { Link, IGroup, Stack, PrimaryButton, DefaultButton, Modal, IconButton, Separator, Button, Dropdown, MessageBar, MessageBarType, DatePicker } from '@fluentui/react';
 import { DetailsList, Selection, IColumn, buildColumns, IColumnReorderOptions, IDragDropEvents, IDragDropContext } from '@fluentui/react';
 import { TextField, ITextFieldStyles } from 'office-ui-fabric-react/lib/TextField';
 import { Toggle, IToggleStyles } from 'office-ui-fabric-react/lib/Toggle';
@@ -9,7 +9,7 @@ import { IPersonaCustomedProps, IMergedPersonaCustomedProps } from '../../interf
 import { fetchJsonWithProgress } from '../../utils/fetchs/fetchWithProgress';
 import { count } from 'console';
 import { theme } from '../../configs/theme';
-import { uploadPersona, uploadPersonasManifest, uploadManifest } from '../../utils/apis/apis';
+import { uploadPersona, uploadPersonasManifest, uploadManifest, uploadOpenResource } from '../../utils/apis/apis';
 import { IOpendataItem } from '../../interfaces/IOpendata';
 import { NavigateShimmer } from '../navigateShimmer';
 import { revealShimmer, hideShimmer } from '../../utils/fetchs/shimmerStatus';
@@ -36,7 +36,8 @@ export interface IOpenDataEditorStates {
     canSave: boolean,
 
     displayMessageBar: boolean,
-    isUploadSuccess: boolean
+    isUploadSuccess: boolean,
+    messageText: string | JSX.Element | JSX.Element[]
 }
 
 export interface IOpenDataEditorProps {
@@ -91,24 +92,79 @@ const popupContainerStyles = {
     minHeight: 480
 };
 
-
+const emptyOpendata: IOpendataItem = { name: "", displayedDate: 1, linkText: "", linkUrl: "", description: "" }
+export const dragEnterClass = mergeStyles({
+    backgroundColor: theme.palette.neutralLight,
+});
 export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenDataEditorStates>{
     private _selection: Selection;
+
+    private _dragDropEvents: IDragDropEvents;
+    private _draggedItem: IOpendataItem | undefined;
+    private _draggedIndex: number;
 
     constructor(props: IOpenDataEditorProps) {
         super(props)
         this.state = {
             opendata: [],
-            columns: buildColumns([{ name: "", linkText: "", linkUrl: "", description: "" }]),
+            columns: buildColumns([emptyOpendata]),
             isAddingOpenDataItem: false,
             canSave: false,
             selectedCount: 0,
-            editingOpenDataItem: { name: "", linkText: "", linkUrl: "", description: "" },
+            editingOpenDataItem: { name: "", linkText: "", linkUrl: "", description: "", displayedDate: undefined },
             displayMessageBar: false,
-            isUploadSuccess: true
+            isUploadSuccess: true,
+            messageText: ""
         }
+        this._dragDropEvents = this._getDragDropEvents();
+        this._draggedIndex = -1;
         this._selection = new Selection({ onSelectionChanged: () => { this._onSelectionChanged(); } });
         this.generateListItems()
+    }
+
+
+    private _insertBeforeItem(item: IOpendataItem): void {
+        const draggedItems = this._selection.isIndexSelected(this._draggedIndex)
+            ? (this._selection.getSelection() as IOpendataItem[])
+            : [this._draggedItem!];
+
+        const insertIndex = this.state.opendata.indexOf(item);
+        const items = this.state.opendata.filter(itm => draggedItems.indexOf(itm) === -1);
+
+        items.splice(insertIndex, 0, ...draggedItems);
+
+        this.setState({ opendata: items, canSave: true });
+    }
+
+    private _getDragDropEvents(): IDragDropEvents {
+        return {
+            canDrop: (dropContext?: IDragDropContext, dragContext?: IDragDropContext) => {
+                return true;
+            },
+            canDrag: (item?: any) => {
+                return true;
+            },
+            onDragEnter: (item?: any, event?: DragEvent) => {
+                // return string is the css classes that will be added to the entering element.
+                return dragEnterClass;
+            },
+            onDragLeave: (item?: any, event?: DragEvent) => {
+                return;
+            },
+            onDrop: (item?: any, event?: DragEvent) => {
+                if (this._draggedItem) {
+                    this._insertBeforeItem(item);
+                }
+            },
+            onDragStart: (item?: any, itemIndex?: number, selectedItems?: any[], event?: MouseEvent) => {
+                this._draggedItem = item;
+                this._draggedIndex = itemIndex!;
+            },
+            onDragEnd: (item?: any, event?: DragEvent) => {
+                this._draggedItem = undefined;
+                this._draggedIndex = -1;
+            },
+        };
     }
 
     private generateListItems() {
@@ -127,8 +183,8 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
                     onRenderItemColumn={this._onRenderItemColumn}
                     setKey="name"
                     items={this.state.opendata}
-                    columns={buildColumns(this.state.opendata)}
                     selection={this._selection}
+                    dragDropEvents={this._dragDropEvents}
                     styles={{ root: { width: "100%", overflowX: "hidden", height: "100%" } }} />
 
             </div>
@@ -141,11 +197,17 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
                             styles={{ root: { width: "inherit" } }}
                             messageBarType={this.state.isUploadSuccess ? MessageBarType.success : MessageBarType.error}
                             onDismiss={() => this.setState({ displayMessageBar: false })}>
-                            {this.state.isUploadSuccess ?
-                                <span>Updated successfully.<Link href="/opendata" target="_blank">Visit website</Link></span>
-                                : "Error occured."}
+                            {this.state.messageText}
                         </MessageBar>
                     }
+                    <input
+                        ref="upload-openresource-input"
+                        type='file'
+                        style={{ display: 'none' }}
+                        onChange={(e) => this._uploadOpenResource(e)}
+                    />
+                    <DefaultButton text="Upload Downloadable File" iconProps={{ iconName: "BulkUpload" }}
+                        onClick={() => this._onClickUploadFileButton()} />
                     <DefaultButton text="Add" iconProps={{ iconName: "Add" }}
                         onClick={() => this._popupOpenDataItemEditor()} />
                     <DefaultButton text="Delete" iconProps={{ iconName: "Delete" }} disabled={this.state.selectedCount != 1} onClick={() => this._deleteOpenDataItem()} />
@@ -187,18 +249,62 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
                             onChange={
                                 (e, str) => this.setState({ editingOpenDataItem: Object.assign(this.state.editingOpenDataItem, { linkUrl: str }) })
                             } />
+                        <DatePicker label={"Date"}
+                            value={this.state.editingOpenDataItem.displayedDate == undefined ? undefined :
+                                new Date(this.state.editingOpenDataItem.displayedDate)}
+                            onSelectDate={(dt) =>
+                                this.setState({
+                                    editingOpenDataItem: Object.assign(
+                                        this.state.editingOpenDataItem, { displayedDate: dt?.getTime() })
+                                })} />
                     </Stack>
                     <Separator />
-                    <PrimaryButton text="Confirm" onClick={() => this._addOpenDataItem()} styles={{ root: { width: "100%" } }} />
+                    <PrimaryButton
+                        disabled={!(this.state.editingOpenDataItem.name.length > 0 &&
+                            this.state.editingOpenDataItem.description.length > 0 &&
+                            this.state.editingOpenDataItem.linkText.length > 0 &&
+                            this.state.editingOpenDataItem.linkUrl.length > 0)}
+                        text="Confirm" onClick={() => this._addOpenDataItem()} styles={{ root: { width: "100%" } }} />
                 </div>
             </Modal>
         </div>
     }
 
+    private _onClickUploadFileButton() {
+        let trueInput = ReactDOM.findDOMNode(this.refs['upload-openresource-input']) as HTMLInputElement;
+        trueInput.click();
+    }
+
+    private _uploadOpenResource(e: React.ChangeEvent<HTMLInputElement>) {
+        var reader = new FileReader();
+        if (e.currentTarget.files != null && e.currentTarget.files.length > 0) {
+
+            let resourceToUpload = e.currentTarget.files[0]
+            revealShimmer();
+            uploadOpenResource(resourceToUpload,
+                () => {
+                    hideShimmer();
+                    this.setState({
+                        displayMessageBar: true,
+                        isUploadSuccess: true,
+                        messageText: <span>File uploaded successfully. It is now at:
+                            <Link href={`/openresource/${resourceToUpload.name}`} target="_blank">
+                                {`/openresource/${resourceToUpload.name}`}
+                            </Link>
+                        </span>
+                    });
+                },
+                () => {
+                    hideShimmer();
+                    this.setState({ canSave: true, displayMessageBar: true, isUploadSuccess: false, messageText: "Error occured." });
+                })
+        }
+    }
+
     private _popupOpenDataItemEditor() {
         this.setState({
             isAddingOpenDataItem: true,
-            editingOpenDataItem: { name: "", linkText: "", linkUrl: "", description: "" }
+            editingOpenDataItem: { name: "", linkText: "", linkUrl: "", description: "", displayedDate: undefined }
         })
     }
 
@@ -227,6 +333,9 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
             alert("Link Url must start with \"http\" or \"/\".")
             return;
         }
+        if (this.state.editingOpenDataItem.displayedDate == 0) {
+            this.state.editingOpenDataItem.displayedDate = undefined
+        }
         this.setState({
             opendata: this.state.opendata.concat([this.state.editingOpenDataItem]),
             canSave: true,
@@ -246,7 +355,7 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
         uploadManifest("opendata", this.state.opendata,
             () => {
                 hideShimmer();
-                this.setState({ displayMessageBar: true, isUploadSuccess: true });
+                this.setState({ displayMessageBar: true, isUploadSuccess: true, messageText: <span>Updated successfully.<Link href="/opendata" target="_blank">Visit website</Link></span> });
                 setTimeout(() => {
                     this.setState({ displayMessageBar: false });
                 }, 2000);

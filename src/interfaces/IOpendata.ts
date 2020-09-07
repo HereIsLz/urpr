@@ -2,5 +2,6 @@ export interface IOpendataItem {
     name: string,
     linkText: string,
     linkUrl: string,
-    description: string
+    description: string,
+    displayedDate?: number
 }

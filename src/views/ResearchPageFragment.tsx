@@ -1,5 +1,5 @@
 import React from 'react'
-import { DesktopNavigation } from '../components/navigation/desktopNavigation'
+import { DesktopNavigation, UrprNavigation } from '../components/navigation/desktopNavigation'
 import { ResponsiveDiv } from '../components/responsive/ResponisveDiv'
 import { Text } from "@fluentui/react";
 import { useViewport } from '../utils/hooks/useViewport';
@@ -107,8 +107,7 @@ export class ResearchPageFragment extends React.Component<IResearchPageFragmentP
         return <div>
 
             <div style={navigatePlaceHolderStyle}>
-                <DesktopNavigation alwaysColored />
-
+                <UrprNavigation alwaysColored blocked />
             </div>
 
             <ResponsiveDiv slimmed>
