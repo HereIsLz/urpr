@@ -172,6 +172,7 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
             e => this.setState({ opendata: e })
         )
     }
+
     private _onSelectionChanged() {
         this.setState({ selectedCount: this._selection.count })
     }
@@ -321,16 +322,16 @@ export class OpenDataEditor extends React.Component<IOpenDataEditorProps, IOpenD
 
     private _addOpenDataItem() {
         //document.getElementById('navigate-shimmer')?.classList.add('shimmering');
-        if (this.state.editingOpenDataItem.name.length <= 1
-            || this.state.editingOpenDataItem.description.length <= 1
-            || this.state.editingOpenDataItem.linkText.length <= 1
-            || this.state.editingOpenDataItem.linkUrl.length <= 1) {
-            alert("All fields must contain more than 1 character.")
+        if (this.state.editingOpenDataItem.name.length <= 0
+            || this.state.editingOpenDataItem.description.length <= 0
+            || this.state.editingOpenDataItem.linkText.length <= 0
+            || this.state.editingOpenDataItem.linkUrl.length <= 0) {
+            alert("Name, LinkText, LinkUrl and Description are not nullable..")
             return;
         }
         if (!this.state.editingOpenDataItem.linkUrl.startsWith("http")
             && !this.state.editingOpenDataItem.linkUrl.startsWith("/")) {
-            alert("Link Url must start with \"http\" or \"/\".")
+            alert("LinkUrl must start with \"http\" or \"/\".")
             return;
         }
         if (this.state.editingOpenDataItem.displayedDate == 0) {

@@ -85,7 +85,6 @@ export const DesktopNavigation: React.FunctionComponent<IDesktopNavigationProps>
                 <NavigateShimmer />
             </div>
             {props.blocked && <div style={{
-                background: theme.palette.neutralLighter,
                 width: '100%',
                 height: NAVIGATION_LAYOUT.height,
             }} />}

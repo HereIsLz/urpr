@@ -12,6 +12,8 @@ import { NAVIGATION_LAYOUT } from '../components/navigation/_layout';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from 'office-ui-fabric-react/lib/Persona';
 import { StretchablePersonaGrid } from '../components/stretchableGrid/StrechablePersonaGrid';
 import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
+import { fetchJsonWithProgress } from '../utils/fetchs/fetchWithProgress';
+import { Markdown } from '../components/markdown/Markdown';
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
     width: "100%",
@@ -49,6 +51,23 @@ const Personas: IPersonaSharedProps[] = [{
 },
 ]
 
+interface ITeamGetInvolvedFragmentStates {
+    markdownString: string
+}
+
+export class TeamGetInvolvedFragment extends React.Component<{}, ITeamGetInvolvedFragmentStates>{
+    constructor() {
+        super({})
+        this.state = {
+            markdownString: ""
+        }
+        fetchJsonWithProgress("/others.json").then(e => this.setState({ markdownString: e.getInvolvedMarkdown }))
+    }
+    render() {
+        return <Markdown unparsedContentString={this.state.markdownString} />
+    }
+}
+
 export const TeamFragment: React.FC = () => {
     const { width } = useViewport();
     return <div>
@@ -66,12 +85,8 @@ export const TeamFragment: React.FC = () => {
             <div style={{ margin: '72px 0 16px 0' }}>
                 <Text variant="superLarge" >Get Involved</Text>
             </div>
-            <div>
-                <Text variant="large" >
-                    We are open for PhD applications from the globe. Applicants please email Dr Liu. (<a href="mailto:liu.lun@pku.edu.cn">liu.lun@pku.edu.cn</a>)
-                </Text>
-            </div>
+            <TeamGetInvolvedFragment />
         </ResponsiveDiv>
         <RoomForFootnot />
-    </div> 
+    </div>
 }

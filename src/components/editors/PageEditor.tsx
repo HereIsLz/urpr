@@ -152,7 +152,6 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
             alert("FileName invalid.")
             return;
         }
-        revealShimmer();
         let newPageManifests = this.state.pageManifest.map(a => a)
         //let trueInput = ReactDOM.findDOMNode(this.refs["add-page-thumbnail"]) as HTMLInputElement;
         if (uploadQueue.length > 0) {
@@ -164,6 +163,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                     }
                 )
             )
+            revealShimmer("upload-page-thumb-shimmer");
 
             uploadPageThumbnail(uploadQueue[0],
                 () => {
@@ -186,7 +186,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                                     messageBarText: "New page content uploaded successfully."
                                 })
 
-                                hideShimmer();
+                                hideShimmer("upload-page-thumb-shimmer");
 
                                 setTimeout(() => {
                                     this.setState({ displayMessageBar: false });
@@ -194,7 +194,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                             },
                             () => {
                                 uploadQueue = []
-                                hideShimmer();
+                                hideShimmer("upload-page-thumb-shimmer");
                                 this.setState({
                                     isEditingNewPage: false,
                                     editingNewPage: Object.assign<{}, IPageManifest>({}, emptyPageManifestItem),
@@ -232,6 +232,9 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                 }
             )
 
+        }
+        else{
+            alert("Thumbnail required.")
         }
     }
 
@@ -320,7 +323,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                                         } />
                                     <DatePicker
                                         placeholder={"Select a Date..."}
-                                        styles={{ root: { marginTop: 8 } }}
+                                        styles={{ root: { marginTop: 6 } }}
                                         onSelectDate={(date) => {
                                             if (date != undefined && date != null)
                                                 this.setState({
@@ -334,9 +337,10 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                                     <DefaultButton
                                         text="Upload Thumbnail"
                                         iconProps={{ iconName: "ThumbnailView" }}
-                                        styles={{ root: { width: "100%", marginTop: 8 } }}
+                                        styles={{ root: { width: "100%", marginTop: 6 } }}
                                         onClick={() => this._onClickUploadThumbnailButton()}
                                     />
+                                    <NavigateShimmer blocked specifiedId="upload-page-thumb-shimmer" />
                                 </div>
                                 <div style={{ width: 408, marginLeft: 12 }}>
                                     {
@@ -371,7 +375,9 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
                                 text="Upload Images"
                                 iconProps={{ iconName: "PictureFill" }}
                                 styles={{ root: { width: "100%" } }} onClick={() => this._onClickUploadImageButton()} />
-
+                            <div style={{ position: "relative", marginTop: 0 }}>
+                                <NavigateShimmer specifiedId="upload-page-resource-shimmer" />
+                            </div>
                         </Stack>
                         <Separator vertical />
                         <div style={{ width: 960 }}>
@@ -421,15 +427,15 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
             return;
         }
         this.setState({ isNewPageRouteNailed: true })
-        revealShimmer();
+        revealShimmer("upload-page-resource-shimmer");
         if (ev.currentTarget.files != null && ev.currentTarget.files.length > 0) {
             let selectedImage = ev.currentTarget.files[0]
             uploadPageResources(selectedImage,
                 this.state.editingNewPage.fileName,
                 () => {
-                    hideShimmer();
+                    hideShimmer("upload-page-resource-shimmer");
                 },
-                () => { hideShimmer(); alert("Error occured uploading image."); }
+                () => { hideShimmer("upload-page-resource-shimmer"); alert("Error occured uploading image."); }
             )
         }
     }
@@ -448,7 +454,7 @@ export class PageEditor extends React.Component<IPageEditorProps, IPageEditorSta
         var reader = new FileReader();
         if (ev.currentTarget.files != null && ev.currentTarget.files.length > 0) {
             let selectedImage = ev.currentTarget.files[0]
-            uploadQueue.push(selectedImage)
+            uploadQueue = [selectedImage]
             reader.readAsDataURL(selectedImage)
             reader.onload = (e) => this.setState({
                 editingNewPage: Object.assign(

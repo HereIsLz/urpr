@@ -1,7 +1,7 @@
-export function revealShimmer(){
-    document.getElementById('navigate-shimmer')?.classList.add('shimmering');
+export function revealShimmer(specifiedId: string = 'navigate-shimmer') {
+    document.getElementById(specifiedId)?.classList.add('shimmering');
 }
 
-export function hideShimmer(){
-    document.getElementById('navigate-shimmer')?.classList.remove('shimmering');
+export function hideShimmer(specifiedId: string = 'navigate-shimmer') {
+    document.getElementById(specifiedId)?.classList.remove('shimmering');
 }

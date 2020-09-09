@@ -25,6 +25,7 @@ import { RenderPersonaFromPersonaManifest_portrait } from '../stretchableGrid/St
 import { uploadPersona, uploadPersonasManifest, uploadManifest } from '../../utils/apis/apis';
 import { revealShimmer, hideShimmer } from '../../utils/fetchs/shimmerStatus';
 import { NavigateShimmer } from '../navigateShimmer';
+import { InfoEditor } from './InfoEditor';
 
 const margin = '0 30px 20px 0';
 const dragEnterClass = mergeStyles({
@@ -192,7 +193,7 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
     public render(): JSX.Element {
         const { columns, personaGroups, canAddGroup, canAddPerson, canDeletePerson, canEditPerson, canSave } = this.state;
         return (
-            <div style={{ height: "calc(100vh - 120px)", position: "relative" }}>
+            <div style={{ height: "calc(100vh - 240px)", position: "relative" }}>
                 <div style={{ width: "100%", overflowX: "hidden", height: "100%", overflowY: "auto" }}>
                     <DetailsList
                         groups={this.getItemAndGroups(personaGroups).groups}
@@ -294,7 +295,7 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
                                         trueInput.click();
                                     }}
                                 />
-
+                                <NavigateShimmer specifiedId="upload-avatar-shimmer" blocked/>
                                 <Stack horizontal tokens={{ childrenGap: 24 }}>
                                     <div style={{ width: 240 }}>
                                         <TextField label={"Link1 Text"}
@@ -486,17 +487,17 @@ export class TeamMemberEditor extends React.Component<ITeamMemberEditorDragDropP
         if (newPersonaGroups.filter(e => e.role == this.state.selectedGroup).length > 0) {
             if (selectedImage != undefined && this.state.editingPerona.thumbnail != undefined) {
                 const fileName = selectedImage.name
-                revealShimmer()
+                revealShimmer("upload-avatar-shimmer")
                 uploadPersona(selectedImage,
                     () => {
-                        hideShimmer();
+                        hideShimmer("upload-avatar-shimmer");
                         this.setState({ displayMessageBar: true, isUploadSuccess: true, messageBarText: "New avatar uploaded successfully." });
                         setTimeout(() => {
                             this.setState({ displayMessageBar: false });
                         }, 1000);
                     },
                     () => {
-                        hideShimmer();
+                        hideShimmer("upload-avatar-shimmer");
                         this.setState({ displayMessageBar: true, isUploadSuccess: false, messageBarText: "Error occured uploading the new avatar." });
                     }
                 )

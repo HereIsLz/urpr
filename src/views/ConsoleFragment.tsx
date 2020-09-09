@@ -19,6 +19,9 @@ import { UrprConsoleLogo } from '../components/ConsoleLogo';
 import { OpenDataEditor } from '../components/editors/OpenDataEditor';
 import { PageEditor } from '../components/editors/PageEditor';
 import { BannerEditor } from '../components/editors/BannerEditor';
+import { UpdateEditor } from '../components/editors/UpdatesEditor';
+import { InfoEditor } from '../components/editors/InfoEditor';
+import { RoomForFootnot } from '../components/footnote/RoomForFootnote';
 
 const navigatePlaceHolderStyle: React.CSSProperties = {
     width: "100%",
@@ -56,7 +59,8 @@ interface IConsoleFragmentProps {
 }
 
 export const ConsoleFragment: React.FC<IConsoleFragmentProps> = (props) => {
-    const [editingKey, setEditingKey] = React.useState("research")
+    const [editingKey, setEditingKey] =
+        React.useState("banner")
     return <div>
 
         <div style={navigatePlaceHolderStyle}>
@@ -104,6 +108,7 @@ export const ConsoleFragment: React.FC<IConsoleFragmentProps> = (props) => {
         }
         {
             editingKey == "team" && <ResponsiveDiv>
+                <InfoEditor />
                 <TeamMemberEditor manifestUrl="/personas.json" />
             </ResponsiveDiv>
         }
@@ -117,5 +122,13 @@ export const ConsoleFragment: React.FC<IConsoleFragmentProps> = (props) => {
                 <PageEditor manifestUrl="/pages.json" />
             </ResponsiveDiv>
         }
+
+        {
+            editingKey == "update" && <ResponsiveDiv>
+                <UpdateEditor />
+            </ResponsiveDiv>
+        }
+
+        <div style={{ height: 40, width: "100%" }} />
     </div>
 }

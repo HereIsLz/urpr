@@ -16,18 +16,17 @@ export interface fetchedItem {
     expire: number,
 }
 
-var fetchedItemsStorage: fetchedItem[] = []
 
 export async function fetchTextWithProgress(url: string): Promise<string> {
-    let fetchedItemsStorageQueryResult = fetchedItemsStorage.find(itm => itm.key == url && itm.expire > new Date().getTime())
-    if (fetchedItemsStorageQueryResult) {
-        return fetchedItemsStorageQueryResult.value
-    }
+    // let fetchedItemsStorageQueryResult = fetchedItemsStorage.find(itm => itm.key == url && itm.expire > new Date().getTime())
+    // if (fetchedItemsStorageQueryResult) {
+    //     return fetchedItemsStorageQueryResult.value
+    // }
     fetchItemCount++;
     document.getElementById('navigate-shimmer')?.classList.add('shimmering')
     return await (await fetch(url, { cache: "no-store" })).text()
         .then(
-            str => { fetchedItemsStorage.push({ key: url, value: str, expire: new Date().getTime() + EXPIRE_TIME_MILLISECOND }); return str }
+            str => { return str }
         )
         .catch(
             //() => { document.getElementById('navigate-shimmer')?.classList.remove('shimmering'); alert("拉取数据错误。"); return "" }
@@ -42,16 +41,16 @@ export async function fetchTextWithProgress(url: string): Promise<string> {
 }
 
 export async function fetchJsonWithProgress(url: string): Promise<any> {
-    let fetchedItemsStorageQueryResult = fetchedItemsStorage.find(itm => itm.key == url && itm.expire > new Date().getTime())
-    if (fetchedItemsStorageQueryResult) {
-        return fetchedItemsStorageQueryResult.value
-    }
+    // let fetchedItemsStorageQueryResult = fetchedItemsStorage.find(itm => itm.key == url && itm.expire > new Date().getTime())
+    // if (fetchedItemsStorageQueryResult) {
+    //     return fetchedItemsStorageQueryResult.value
+    // }
     fetchItemCount++;
     document.getElementById('navigate-shimmer')?.classList.add('shimmering')
     return await (await fetch(url, { cache: "no-store" })).json()
         .then(
 
-            json => { fetchedItemsStorage.push({ key: url, value: json, expire: new Date().getTime() + EXPIRE_TIME_MILLISECOND }); return json }
+            json => { return json }
         )
         .catch(
             //() => { document.getElementById('navigate-shimmer')?.classList.remove('shimmering'); alert("拉取数据错误。"); return "" }

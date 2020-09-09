@@ -30,7 +30,14 @@ export class Markdown extends React.Component<IMarkdownProps, {}>{
     constructor(props: IMarkdownProps) {
         super(props)
     }
-
+    componentDidUpdate() {
+        try {
+            eval("MathJax.typeset();")
+        } catch{ }
+        try {
+            eval("document.querySelectorAll(\'pre code\').forEach((block)=>{hljs.highlightBlock(block);});")
+        } catch{ }
+    }
     render() {
         return this.props.unparsedContentString ? <div>
             <AutoAdjustMarkdownContainer innerHtml={this.props.unparsedContentString} />

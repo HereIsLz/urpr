@@ -27,7 +27,8 @@ export interface IIndexFragmentStaticProps {
     heroText: string,
     heroText2: string,
     description: string,
-    bgImageName?: string
+    bgImageName?: string,
+    color?: string
 }
 
 export const IndexFragmentStatic: React.FC<IIndexFragmentStaticProps> = (props) => {
@@ -42,27 +43,27 @@ export const IndexFragmentStatic: React.FC<IIndexFragmentStaticProps> = (props) 
             <div style={{ display: "table", height: "100%", width: "100%", position: "relative" }}>
                 <div style={{ display: "table-cell", verticalAlign: "middle", paddingBottom: 80 }}>
                     <ResponsiveDiv>
-                        <div style={{ width: width > breakpointTiny ? "64%" : "90%", paddingLeft: width > breakpointTiny ? 60 : 0 }}>
-                            <Text block variant={width > breakpointLarge ? "superLarge" : "xxLargePlus"}
+                        <div style={{ width: width > breakpointMedium ? "64%" : "90%", paddingLeft: width > breakpointMedium ? 60 : 0 }}>
+                            <Text block variant={width > breakpointTiny ? "superLarge" : "xxLargePlus"}
                                 style={{
-                                    color: theme.palette.neutralDark, lineHeight: 1.2,
+                                    color: props.color ? props.color : theme.palette.neutralDark, lineHeight: 1.2,
                                 }}>
                                 {props.heroText}
                             </Text>
-                            <Text block variant={width > breakpointLarge ? "superLarge" : "xxLargePlus"}
+                            <Text block variant={width > breakpointTiny ? "superLarge" : "xxLargePlus"}
                                 style={{
-                                    color: theme.palette.neutralDark, lineHeight: 1.2
+                                    color: props.color ? props.color : theme.palette.neutralDark, lineHeight: 1.2
                                 }}>
                                 {props.heroText2}
                             </Text>
                         </div>
                         <div style={{
-                            width: width > breakpointTiny ? "64%" : "100%",
+                            width: width > breakpointMedium ? "64%" : "100%",
                             lineHeight: width > breakpointTiny ? 1.8 : 1.5,
                             marginTop: 12,
-                            paddingLeft: width > breakpointTiny ? 60 : 0
+                            paddingLeft: width > breakpointMedium ? 60 : 0
                         }}>
-                            <Text variant={width > breakpointLarge ? "xLarge" : "large"} styles={{ root: { fontWeight: 400, whiteSpace: "pre-wrap" } }}>
+                            <Text variant={width > breakpointTiny ? "xLarge" : "large"} styles={{ root: { fontWeight: 400, whiteSpace: "pre-wrap", color: props.color ? props.color : theme.palette.neutralDark } }}>
                                 {props.description}
                             </Text>
                         </div>
@@ -74,7 +75,7 @@ export const IndexFragmentStatic: React.FC<IIndexFragmentStaticProps> = (props) 
 
         <ResponsiveDiv centered>
             <div style={{ margin: '72px 0' }}>
-                <Text variant="superLarge" style={{
+                <Text variant={width > breakpointTiny ? "superLarge" : "xxLargePlus"} style={{
                     lineHeight: 2, textAlign: 'center', //fontFamily:"Product Sans"
                 }}>OUR RESEARCH</Text>
             </div>

@@ -77,7 +77,7 @@ export function uploadOpenResource(_file: File,
 }
 
 export const uploadManifestUrl = "/console/api-update-manifest/";
-export function uploadManifest(manifestName: "personas" | "opendata" | "pages" | "pivot" | "banner" | "updates",
+export function uploadManifest(manifestName: "personas" | "opendata" | "pages" | "pivot" | "others" | "banner" | "updates",
     jsonObject: Object,
     _successCallback: () => void = () => { },
     _failCallback: () => void = () => { }) {
