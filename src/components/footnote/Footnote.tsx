@@ -3,6 +3,7 @@ import { theme } from "../../configs/theme"
 import { FOOTNOTE_LAYOUT } from "./_layout"
 import { ResponsiveDiv } from "../responsive/ResponisveDiv"
 import { Text } from '@fluentui/react'
+import { UrprAbbr } from "../../configs/strings"
 
 const footnoteContainerStyle: React.CSSProperties = {
     width: '100%',
@@ -17,7 +18,7 @@ export const Footnote: React.FC = () => {
     return <div style={footnoteContainerStyle}>
         <ResponsiveDiv>
             <Text variant="medium" styles={{ root: { lineHeight: FOOTNOTE_LAYOUT.height, color: theme.palette.neutralTertiary } }}>
-                Copyright © URPR. All rights reserved.</Text>
+                Copyright © {UrprAbbr}. All rights reserved.</Text>
         </ResponsiveDiv>
     </div >
 }

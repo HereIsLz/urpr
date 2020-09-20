@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@fluentui/react'
 import ReactDOM from 'react-dom';
 import { render } from '@testing-library/react';
-import { UrprAbbr, UrprDesc } from '../configs/strings';
+import { UrprAbbr, UrprDesc, UrprSubAbbr } from '../configs/strings';
 import { theme } from '../configs/theme';
 
 
@@ -25,6 +25,6 @@ export const UrprLogo: React.FC = () => {
             //fontFamily: "Josefin Sans",
             //fontFamily: "Product Sans"
         }}>
-        {UrprAbbr}
+        {UrprSubAbbr}
     </Text>
 }
